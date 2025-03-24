@@ -1,15 +1,16 @@
 
 import { motion } from "framer-motion";
-import { Database } from "lucide-react";
+import { Database, Github, ExternalLink } from "lucide-react";
 
 interface ProjectCardProps {
   title: string;
   description: string;
   image: string;
   link: string;
+  github?: string; // Optional GitHub repository link
 }
 
-export const ProjectCard = ({ title, description, image, link }: ProjectCardProps) => {
+export const ProjectCard = ({ title, description, image, link, github }: ProjectCardProps) => {
   return (
     <motion.div
       whileHover={{ y: -5 }}
@@ -31,6 +32,20 @@ export const ProjectCard = ({ title, description, image, link }: ProjectCardProp
           <p className="text-muted-foreground">{description}</p>
         </div>
       </a>
+      
+      {/* Project links */}
+      <div className="px-6 pb-4 mt-auto flex items-center gap-4">
+        {github && (
+          <a href={github} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-primary transition-colors flex items-center gap-1" aria-label={`GitHub repository for ${title}`}>
+            <Github className="h-4 w-4" />
+            <span className="text-sm">GitHub</span>
+          </a>
+        )}
+        <a href={link} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-primary transition-colors flex items-center gap-1 ml-auto" aria-label={`Live demo for ${title}`}>
+          <ExternalLink className="h-4 w-4" />
+          <span className="text-sm">Demo</span>
+        </a>
+      </div>
     </motion.div>
   );
 };
