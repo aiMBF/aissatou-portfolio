@@ -17,23 +17,12 @@ export const ContactInfo = () => {
         </div>
         <div>
           <h3 className="font-medium mb-1">Email</h3>
-          <a href="mailto:contact@example.com" className="text-primary hover:underline">
-            contact@example.com
+          <a href="mailto:aissatou.balde.cop@gmail.com" className="text-primary hover:underline">
+            aissatou.balde.cop@gmail.com
           </a>
         </div>
       </div>
       
-      <div className="bg-secondary p-6 rounded-lg flex items-center gap-4">
-        <div className="bg-accent/10 p-3 rounded-full">
-          <Phone className="w-6 h-6 text-accent" />
-        </div>
-        <div>
-          <h3 className="font-medium mb-1">Phone</h3>
-          <a href="tel:+1234567890" className="text-primary hover:underline">
-            +1 (234) 567-890
-          </a>
-        </div>
-      </div>
       
       <div className="bg-secondary p-6 rounded-lg flex items-center gap-4">
         <div className="bg-accent/10 p-3 rounded-full">
@@ -41,8 +30,8 @@ export const ContactInfo = () => {
         </div>
         <div>
           <h3 className="font-medium mb-1">LinkedIn</h3>
-          <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-            linkedin.com/in/yourprofile
+          <a href="https://www.linkedin.com/in/aissatou-balde-845553196/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+            Linkedin Profile
           </a>
         </div>
       </div>
