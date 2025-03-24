@@ -1,5 +1,10 @@
 
 import { m } from "framer-motion";
+import { ContactInfo } from "./ContactInfo";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
+import { Button } from "./ui/button";
 
 export const Contact = () => {
   return (
@@ -16,46 +21,45 @@ export const Contact = () => {
           <h2 className="text-3xl md:text-4xl font-bold mt-2">Get In Touch</h2>
         </m.div>
 
+        <ContactInfo />
+
         <m.form
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
           viewport={{ once: true }}
           className="space-y-6"
         >
           <div>
-            <label htmlFor="name" className="block text-sm font-medium mb-2">Name</label>
-            <input
+            <Label htmlFor="name" className="block text-sm font-medium mb-2">Name</Label>
+            <Input
               type="text"
               id="name"
-              className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-shadow"
               placeholder="Your name"
             />
           </div>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium mb-2">Email</label>
-            <input
+            <Label htmlFor="email" className="block text-sm font-medium mb-2">Email</Label>
+            <Input
               type="email"
               id="email"
-              className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-shadow"
               placeholder="your@email.com"
             />
           </div>
           <div>
-            <label htmlFor="message" className="block text-sm font-medium mb-2">Message</label>
-            <textarea
+            <Label htmlFor="message" className="block text-sm font-medium mb-2">Message</Label>
+            <Textarea
               id="message"
               rows={4}
-              className="w-full px-4 py-2 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-shadow"
               placeholder="Your message"
             />
           </div>
-          <button
+          <Button
             type="submit"
             className="w-full bg-primary text-primary-foreground px-8 py-3 rounded-lg hover-lift"
           >
             Send Message
-          </button>
+          </Button>
         </m.form>
       </div>
     </section>

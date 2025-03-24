@@ -1,0 +1,63 @@
+
+import { m } from "framer-motion";
+import { Mail, Phone, Linkedin, Github } from "lucide-react";
+
+export const ContactInfo = () => {
+  return (
+    <m.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+      viewport={{ once: true }}
+      className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10"
+    >
+      <div className="bg-secondary p-6 rounded-lg flex items-center gap-4">
+        <div className="bg-accent/10 p-3 rounded-full">
+          <Mail className="w-6 h-6 text-accent" />
+        </div>
+        <div>
+          <h3 className="font-medium mb-1">Email</h3>
+          <a href="mailto:contact@example.com" className="text-primary hover:underline">
+            contact@example.com
+          </a>
+        </div>
+      </div>
+      
+      <div className="bg-secondary p-6 rounded-lg flex items-center gap-4">
+        <div className="bg-accent/10 p-3 rounded-full">
+          <Phone className="w-6 h-6 text-accent" />
+        </div>
+        <div>
+          <h3 className="font-medium mb-1">Phone</h3>
+          <a href="tel:+1234567890" className="text-primary hover:underline">
+            +1 (234) 567-890
+          </a>
+        </div>
+      </div>
+      
+      <div className="bg-secondary p-6 rounded-lg flex items-center gap-4">
+        <div className="bg-accent/10 p-3 rounded-full">
+          <Linkedin className="w-6 h-6 text-accent" />
+        </div>
+        <div>
+          <h3 className="font-medium mb-1">LinkedIn</h3>
+          <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+            linkedin.com/in/yourprofile
+          </a>
+        </div>
+      </div>
+      
+      <div className="bg-secondary p-6 rounded-lg flex items-center gap-4">
+        <div className="bg-accent/10 p-3 rounded-full">
+          <Github className="w-6 h-6 text-accent" />
+        </div>
+        <div>
+          <h3 className="font-medium mb-1">GitHub</h3>
+          <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+            github.com/yourusername
+          </a>
+        </div>
+      </div>
+    </m.div>
+  );
+};
