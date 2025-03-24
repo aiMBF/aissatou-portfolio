@@ -1,5 +1,5 @@
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 export const Skills = () => {
   const skillCategories = [
@@ -24,7 +24,7 @@ export const Skills = () => {
   return (
     <section id="skills" className="bg-secondary section-padding">
       <div className="max-w-5xl mx-auto">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -33,11 +33,11 @@ export const Skills = () => {
         >
           <span className="text-sm uppercase tracking-wider text-muted-foreground">Expertise</span>
           <h2 className="text-3xl md:text-4xl font-bold mt-2">Technical Skills</h2>
-        </motion.div>
+        </m.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {skillCategories.map((category, catIndex) => (
-            <motion.div
+            <m.div
               key={category.category}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -48,7 +48,7 @@ export const Skills = () => {
               <h3 className="text-xl font-semibold mb-4 text-primary">{category.category}</h3>
               <div className="grid grid-cols-2 gap-3">
                 {category.skills.map((skill, index) => (
-                  <motion.div
+                  <m.div
                     key={skill}
                     initial={{ opacity: 0, x: -10 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -57,10 +57,10 @@ export const Skills = () => {
                     className="bg-secondary rounded p-3 text-center hover-lift"
                   >
                     <span className="font-medium">{skill}</span>
-                  </motion.div>
+                  </m.div>
                 ))}
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>

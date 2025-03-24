@@ -1,5 +1,5 @@
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Database, Github, ExternalLink } from "lucide-react";
 
 interface ProjectCardProps {
@@ -12,7 +12,7 @@ interface ProjectCardProps {
 
 export const ProjectCard = ({ title, description, image, link, github }: ProjectCardProps) => {
   return (
-    <motion.div
+    <m.div
       whileHover={{ y: -5 }}
       className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 h-full flex flex-col"
     >
@@ -46,6 +46,6 @@ export const ProjectCard = ({ title, description, image, link, github }: Project
           <span className="text-sm">Demo</span>
         </a>
       </div>
-    </motion.div>
+    </m.div>
   );
 };

@@ -1,11 +1,11 @@
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 export const About = () => {
   return (
     <section id="about" className="bg-secondary section-padding">
       <div className="max-w-4xl mx-auto">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -14,9 +14,9 @@ export const About = () => {
         >
           <span className="text-sm uppercase tracking-wider text-muted-foreground">About</span>
           <h2 className="text-3xl md:text-4xl font-bold mt-2">Cloud Data Expert</h2>
-        </motion.div>
+        </m.div>
         
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -29,7 +29,7 @@ export const About = () => {
           <p className="text-lg leading-relaxed">
             With a strong background in both software engineering and data science, I bridge the gap between data infrastructure and business intelligence. I'm passionate about solving complex data challenges and enabling organizations to make data-informed decisions through scalable, resilient cloud architectures.
           </p>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

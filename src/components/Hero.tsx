@@ -1,12 +1,12 @@
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Database, Server, Cloud } from "lucide-react";
 
 export const Hero = () => {
   return (
     <section className="min-h-screen flex items-center justify-center section-padding">
       <div className="max-w-4xl mx-auto text-center">
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -15,24 +15,24 @@ export const Hero = () => {
           <Database className="w-10 h-10 text-accent" />
           <Server className="w-10 h-10 text-primary" />
           <Cloud className="w-10 h-10 text-accent" />
-        </motion.div>
-        <motion.h1 
+        </m.div>
+        <m.h1 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="text-4xl md:text-6xl font-bold mb-6"
         >
           Cloud Data Engineering
-        </motion.h1>
-        <motion.p 
+        </m.h1>
+        <m.p 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-lg md:text-xl mb-8"
         >
           Building scalable data pipelines and analytics solutions
-        </motion.p>
-        <motion.div
+        </m.p>
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
@@ -49,7 +49,7 @@ export const Hero = () => {
           >
             My Skills
           </a>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

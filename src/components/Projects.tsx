@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+
+import { m } from "framer-motion";
 import { ProjectCard } from "./ProjectCard";
 
 export const Projects = () => {
@@ -29,7 +30,7 @@ export const Projects = () => {
   return (
     <section id="projects" className="section-padding">
       <div className="max-w-6xl mx-auto">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -38,11 +39,11 @@ export const Projects = () => {
         >
           <span className="text-sm uppercase tracking-wider text-muted-foreground">Portfolio</span>
           <h2 className="text-3xl md:text-4xl font-bold mt-2">Data Engineering Projects</h2>
-        </motion.div>
+        </m.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
-            <motion.div
+            <m.div
               key={project.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -50,7 +51,7 @@ export const Projects = () => {
               viewport={{ once: true }}
             >
               <ProjectCard {...project} />
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>

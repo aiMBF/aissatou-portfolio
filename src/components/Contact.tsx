@@ -1,10 +1,11 @@
-import { motion } from "framer-motion";
+
+import { m } from "framer-motion";
 
 export const Contact = () => {
   return (
     <section id="contact" className="section-padding">
       <div className="max-w-4xl mx-auto">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -13,9 +14,9 @@ export const Contact = () => {
         >
           <span className="text-sm uppercase tracking-wider text-muted-foreground">Contact</span>
           <h2 className="text-3xl md:text-4xl font-bold mt-2">Get In Touch</h2>
-        </motion.div>
+        </m.div>
 
-        <motion.form
+        <m.form
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -55,7 +56,7 @@ export const Contact = () => {
           >
             Send Message
           </button>
-        </motion.form>
+        </m.form>
       </div>
     </section>
   );

@@ -1,5 +1,5 @@
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -26,7 +26,7 @@ export const Blog = () => {
   return (
     <section id="blog" className="section-padding bg-secondary/30">
       <div className="container mx-auto">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -36,11 +36,11 @@ export const Blog = () => {
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Sharing insights and experiences from my journey in cloud data engineering.
           </p>
-        </motion.div>
+        </m.div>
 
         <div className="grid md:grid-cols-2 gap-8 mb-10">
           {featuredPosts.map((post) => (
-            <motion.div
+            <m.div
               key={post.id}
               whileHover={{ y: -5 }}
               className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 h-full flex flex-col"
@@ -60,7 +60,7 @@ export const Blog = () => {
                   Read more <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
 
