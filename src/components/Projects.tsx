@@ -1,24 +1,25 @@
+
 import { motion } from "framer-motion";
 import { ProjectCard } from "./ProjectCard";
 
 export const Projects = () => {
   const projects = [
     {
-      title: "E-commerce Platform",
-      description: "A modern e-commerce solution with real-time inventory management.",
-      image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+      title: "Cloud Data Lake Architecture",
+      description: "Designed and implemented a data lake solution on AWS S3 with Glue ETL pipelines and Athena for analytics.",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71",
       link: "#"
     },
     {
-      title: "Portfolio Website",
-      description: "A minimalist portfolio for a professional photographer.",
-      image: "https://images.unsplash.com/photo-1483058712412-4245e9b90334",
+      title: "Real-time Analytics Platform",
+      description: "Built a streaming data platform using Apache Kafka, Spark Streaming, and Google BigQuery.",
+      image: "https://images.unsplash.com/photo-1551434678-e076c223a692",
       link: "#"
     },
     {
-      title: "Mobile App",
-      description: "A cross-platform mobile application for task management.",
-      image: "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9",
+      title: "Enterprise Data Warehouse",
+      description: "Migrated an on-premise data warehouse to Snowflake, improving query performance by 10x.",
+      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f",
       link: "#"
     }
   ];
@@ -34,7 +35,7 @@ export const Projects = () => {
           className="text-center mb-16"
         >
           <span className="text-sm uppercase tracking-wider text-muted-foreground">Portfolio</span>
-          <h2 className="text-3xl md:text-4xl font-bold mt-2">Featured Projects</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mt-2">Data Engineering Projects</h2>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
