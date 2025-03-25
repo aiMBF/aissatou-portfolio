@@ -1,6 +1,6 @@
 
 import { m } from "framer-motion";
-import { Database, Server, Cloud } from "lucide-react";
+import { Database, Server, Cloud, Code } from "lucide-react";
 
 export const Hero = () => {
   return (
@@ -21,7 +21,7 @@ export const Hero = () => {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="text-xl md:text-2xl font-medium text-primary mb-8"
         >
-          Cloud Data Engineering Professional
+          Cloud Data Engineering | Machine Learning | DevOps
         </m.p>
         
         <m.div 
@@ -33,6 +33,7 @@ export const Hero = () => {
           <Database className="w-10 h-10 text-accent" />
           <Server className="w-10 h-10 text-primary" />
           <Cloud className="w-10 h-10 text-accent" />
+          <Code className="w-10 h-10 text-primary" />
         </m.div>
         
         <m.p 
@@ -41,7 +42,7 @@ export const Hero = () => {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="text-lg md:text-xl mb-8"
         >
-          Building scalable data pipelines and analytics solutions
+          Building scalable data solutions and sharing insights on ML & DevOps
         </m.p>
         
         <m.div
@@ -56,10 +57,10 @@ export const Hero = () => {
             View Projects
           </a>
           <a 
-            href="#skills" 
+            href="#blog" 
             className="inline-block bg-secondary text-secondary-foreground px-8 py-3 rounded-full hover-lift"
           >
-            My Skills
+            Read My Blog
           </a>
         </m.div>
       </div>

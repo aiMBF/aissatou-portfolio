@@ -34,35 +34,35 @@ const allBlogPosts = [
   },
   {
     id: "3",
-    title: "Optimizing Spark Jobs for Performance",
-    excerpt: "Tips and tricks to make your Apache Spark jobs run faster and more efficiently in production environments.",
-    date: "July 10, 2023",
-    readTime: "10 min read",
-    category: "Performance"
+    title: "Machine Learning for Anomaly Detection in Production",
+    excerpt: "How to implement ML models that can detect unusual patterns in your data streams and trigger automated responses.",
+    date: "August 5, 2023",
+    readTime: "7 min read",
+    category: "Machine Learning"
   },
   {
     id: "4",
-    title: "The Future of Data Lakes: Trends and Predictions",
-    excerpt: "Examining the evolution of data lakes and where the technology is headed in the next few years.",
-    date: "August 5, 2023",
-    readTime: "7 min read",
-    category: "Trends"
-  },
-  {
-    id: "5",
-    title: "Implementing CI/CD for Database Changes",
-    excerpt: "How to apply DevOps principles to database development for more reliable deployments.",
-    date: "September 12, 2023",
+    title: "CI/CD Pipelines for Data Engineering Projects",
+    excerpt: "A practical guide to implementing DevOps practices in data engineering workflows for faster and more reliable deployments.",
+    date: "September 18, 2023",
     readTime: "9 min read",
     category: "DevOps"
   },
   {
+    id: "5",
+    title: "Implementing AI-Powered Data Quality Checks",
+    excerpt: "Using machine learning to automatically detect and flag data quality issues in your data pipelines.",
+    date: "October 12, 2023",
+    readTime: "9 min read",
+    category: "Machine Learning"
+  },
+  {
     id: "6",
-    title: "Real-time Analytics with Kafka and ksqlDB",
-    excerpt: "Building a streaming analytics platform with Kafka ecosystem tools for immediate insights.",
-    date: "October 18, 2023",
+    title: "Container Orchestration for Data Processing Workloads",
+    excerpt: "Best practices for running data processing jobs in Kubernetes and other container orchestration platforms.",
+    date: "November 18, 2023",
     readTime: "12 min read",
-    category: "Streaming"
+    category: "DevOps"
   }
 ];
 
@@ -82,7 +82,7 @@ const BlogPage = () => {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-primary mb-4">Blog</h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Sharing my thoughts, experiences, and insights about cloud data engineering and modern data architecture.
+            Sharing my thoughts, experiences, and insights about Machine Learning, DevOps, and cloud data engineering.
           </p>
         </div>
 
@@ -140,9 +140,6 @@ const BlogPage = () => {
             </PaginationItem>
             <PaginationItem>
               <PaginationLink href="#">2</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">3</PaginationLink>
             </PaginationItem>
             <PaginationItem>
               <PaginationNext href="#" />

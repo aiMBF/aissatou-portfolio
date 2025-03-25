@@ -12,37 +12,60 @@ export const Blog = () => {
       title: "Building Scalable Data Pipelines in the Cloud",
       excerpt: "Learn how to design and implement data pipelines that can handle massive volumes of data without breaking a sweat.",
       date: "May 15, 2023",
-      readTime: "8 min read"
+      readTime: "8 min read",
+      category: "Cloud Infrastructure"
     },
     {
       id: "2",
       title: "Data Governance Best Practices for Enterprise",
       excerpt: "Explore the essential strategies to maintain data quality and compliance in large organizations.",
       date: "June 22, 2023",
-      readTime: "6 min read"
+      readTime: "6 min read",
+      category: "Best Practices"
+    },
+    {
+      id: "3",
+      title: "Machine Learning for Anomaly Detection in Production",
+      excerpt: "How to implement ML models that can detect unusual patterns in your data streams and trigger automated responses.",
+      date: "August 5, 2023",
+      readTime: "7 min read",
+      category: "Machine Learning"
+    },
+    {
+      id: "4",
+      title: "CI/CD Pipelines for Data Engineering Projects",
+      excerpt: "A practical guide to implementing DevOps practices in data engineering workflows for faster and more reliable deployments.",
+      date: "September 18, 2023",
+      readTime: "9 min read",
+      category: "DevOps"
     }
   ];
+
+  // Display only 2 posts in the homepage section
+  const homepagePosts = featuredPosts.slice(0, 2);
 
   return (
     <section id="blog" className="section-padding bg-secondary/30">
       <div className="container mx-auto">
         <m.div
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
           className="text-center mb-12"
         >
           <h2 className="text-3xl font-bold text-primary mb-4">My Blog</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Sharing insights and experiences from my journey in cloud data engineering.
+            Sharing insights and experiences on Machine Learning, DevOps, and cloud data engineering.
           </p>
         </m.div>
 
         <div className="grid md:grid-cols-2 gap-8 mb-10">
-          {featuredPosts.map((post) => (
+          {homepagePosts.map((post) => (
             <m.div
               key={post.id}
               whileHover={{ y: -5 }}
+              viewport={{ once: true }}
               className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 h-full flex flex-col"
             >
               <div className="p-6 flex-grow">
