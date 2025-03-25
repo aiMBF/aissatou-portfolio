@@ -12,8 +12,8 @@ export const About = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <span className="text-sm uppercase tracking-wider text-muted-foreground">About</span>
-          <h2 className="text-3xl md:text-4xl font-bold mt-2">Aissatou BALDE</h2>
+          <span className="text-sm uppercase tracking-wider text-muted-foreground">About Me</span>
+          <h2 className="text-3xl md:text-4xl font-bold mt-2">Professional Background</h2>
         </m.div>
         
         <m.div
