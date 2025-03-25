@@ -1,6 +1,13 @@
 
 import { m } from "framer-motion";
 import { ProjectCard } from "./ProjectCard";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious
+} from "@/components/ui/carousel";
 
 export const Projects = () => {
   const projects = [
@@ -24,6 +31,20 @@ export const Projects = () => {
       image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f",
       link: "#",
       github: "https://github.com/username/enterprise-data-warehouse"
+    },
+    {
+      title: "ML Pipeline Orchestration",
+      description: "Created a robust ML pipeline using Airflow and MLflow for model training, tracking, and deployment.",
+      image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c",
+      link: "#",
+      github: "https://github.com/username/ml-pipeline-orchestration"
+    },
+    {
+      title: "DevOps Infrastructure as Code",
+      description: "Implemented infrastructure as code using Terraform and AWS CloudFormation for scalable deployments.",
+      image: "https://images.unsplash.com/photo-1516110833967-0b5716ca1387",
+      link: "#",
+      github: "https://github.com/username/infrastructure-as-code"
     }
   ];
 
@@ -41,18 +62,34 @@ export const Projects = () => {
           <h2 className="text-3xl md:text-4xl font-bold mt-2">Data Engineering Projects</h2>
         </m.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <m.div
-              key={project.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <ProjectCard {...project} />
-            </m.div>
-          ))}
+        <div className="px-8 md:px-16">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent>
+              {projects.map((project, index) => (
+                <CarouselItem key={project.title} className="md:basis-1/2 lg:basis-1/3 pl-4">
+                  <m.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    className="h-full"
+                  >
+                    <ProjectCard {...project} />
+                  </m.div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div className="flex justify-center mt-8 gap-4">
+              <CarouselPrevious className="static transform-none" />
+              <CarouselNext className="static transform-none" />
+            </div>
+          </Carousel>
         </div>
       </div>
     </section>
