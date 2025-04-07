@@ -8,6 +8,10 @@ import { LazyMotion, domAnimation } from "framer-motion";
 import Index from "./pages/Index";
 import BlogPage from "./pages/BlogPage";
 import BlogPostPage from "./pages/BlogPostPage";
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminProjects from "./pages/AdminProjects";
+import AdminBlog from "./pages/AdminBlog";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +26,13 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:postId" element={<BlogPostPage />} />
+            
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminLogin />} />
+            <Route path="/admin" element={<AdminDashboard />}>
+              <Route path="projects" element={<AdminProjects />} />
+              <Route path="blog" element={<AdminBlog />} />
+            </Route>
           </Routes>
         </TooltipProvider>
       </BrowserRouter>

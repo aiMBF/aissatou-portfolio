@@ -25,19 +25,19 @@ export const Blog = () => {
     },
     {
       id: "3",
-      title: "Machine Learning for Anomaly Detection in Production",
-      excerpt: "How to implement ML models that can detect unusual patterns in your data streams and trigger automated responses.",
+      title: "IA for Anomaly Detection in Production",
+      excerpt: "How to implement IA models that can detect unusual patterns in your data streams and trigger automated responses.",
       date: "August 5, 2023",
       readTime: "7 min read",
-      category: "Machine Learning"
+      category: "IA"
     },
     {
       id: "4",
       title: "CI/CD Pipelines for Data Engineering Projects",
-      excerpt: "A practical guide to implementing DevOps practices in data engineering workflows for faster and more reliable deployments.",
+      excerpt: "A practical guide to implementing modern practices in data engineering workflows for faster and more reliable deployments.",
       date: "September 18, 2023",
       readTime: "9 min read",
-      category: "DevOps"
+      category: "Data Infrastructure"
     }
   ];
 
@@ -56,7 +56,7 @@ export const Blog = () => {
         >
           <h2 className="text-3xl font-bold text-primary mb-4">My Blog</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Sharing insights and experiences on Machine Learning, DevOps, and cloud data engineering.
+            Sharing insights and experiences on IA and cloud data engineering.
           </p>
         </m.div>
 

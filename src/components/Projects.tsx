@@ -33,14 +33,14 @@ export const Projects = () => {
       github: "https://github.com/username/enterprise-data-warehouse"
     },
     {
-      title: "ML Pipeline Orchestration",
-      description: "Created a robust ML pipeline using Airflow and MLflow for model training, tracking, and deployment.",
+      title: "IA Pipeline Orchestration",
+      description: "Created a robust IA pipeline using Airflow and MLflow for model training, tracking, and deployment.",
       image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c",
       link: "#",
-      github: "https://github.com/username/ml-pipeline-orchestration"
+      github: "https://github.com/username/ia-pipeline-orchestration"
     },
     {
-      title: "DevOps Infrastructure as Code",
+      title: "Data Infrastructure as Code",
       description: "Implemented infrastructure as code using Terraform and AWS CloudFormation for scalable deployments.",
       image: "https://images.unsplash.com/photo-1516110833967-0b5716ca1387",
       link: "#",

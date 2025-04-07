@@ -21,7 +21,7 @@ export const Hero = () => {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="text-xl md:text-2xl font-medium text-primary mb-8"
         >
-          Cloud Data Engineering | Machine Learning | DevOps
+          Cloud Data Engineering | IA | Data Infrastructure
         </m.p>
         
         <m.div 
@@ -42,7 +42,7 @@ export const Hero = () => {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="text-lg md:text-xl mb-8"
         >
-          Building scalable data solutions and sharing insights on ML & DevOps
+          Building scalable data solutions and sharing insights on IA & Data Infrastructure
         </m.p>
         
         <m.div

@@ -34,27 +34,27 @@ const allBlogPosts = [
   },
   {
     id: "3",
-    title: "Machine Learning for Anomaly Detection in Production",
-    excerpt: "How to implement ML models that can detect unusual patterns in your data streams and trigger automated responses.",
+    title: "IA for Anomaly Detection in Production",
+    excerpt: "How to implement IA models that can detect unusual patterns in your data streams and trigger automated responses.",
     date: "August 5, 2023",
     readTime: "7 min read",
-    category: "Machine Learning"
+    category: "IA"
   },
   {
     id: "4",
     title: "CI/CD Pipelines for Data Engineering Projects",
-    excerpt: "A practical guide to implementing DevOps practices in data engineering workflows for faster and more reliable deployments.",
+    excerpt: "A practical guide to implementing modern practices in data engineering workflows for faster and more reliable deployments.",
     date: "September 18, 2023",
     readTime: "9 min read",
-    category: "DevOps"
+    category: "Data Infrastructure"
   },
   {
     id: "5",
-    title: "Implementing AI-Powered Data Quality Checks",
-    excerpt: "Using machine learning to automatically detect and flag data quality issues in your data pipelines.",
+    title: "Implementing IA-Powered Data Quality Checks",
+    excerpt: "Using artificial intelligence to automatically detect and flag data quality issues in your data pipelines.",
     date: "October 12, 2023",
     readTime: "9 min read",
-    category: "Machine Learning"
+    category: "IA"
   },
   {
     id: "6",
@@ -62,7 +62,7 @@ const allBlogPosts = [
     excerpt: "Best practices for running data processing jobs in Kubernetes and other container orchestration platforms.",
     date: "November 18, 2023",
     readTime: "12 min read",
-    category: "DevOps"
+    category: "Data Infrastructure"
   }
 ];
 
@@ -82,7 +82,7 @@ const BlogPage = () => {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-primary mb-4">Blog</h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Sharing my thoughts, experiences, and insights about Machine Learning, DevOps, and cloud data engineering.
+            Sharing my thoughts, experiences, and insights about IA and cloud data engineering.
           </p>
         </div>
 
