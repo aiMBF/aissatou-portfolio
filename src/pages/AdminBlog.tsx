@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Plus, Pencil, Trash, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { toast } from "@/hooks/use-toast";
 
 // Define a specific blog post type
 type BlogPost = {
@@ -42,6 +44,46 @@ type BlogPost = {
   readTime: string;
   category: string;
 };
+
+// Initial blog posts data that matches what's shown on the main site
+const initialBlogPosts: BlogPost[] = [
+  {
+    id: "1",
+    title: "Building Scalable Data Pipelines in the Cloud",
+    excerpt: "Learn how to design and implement data pipelines that can handle massive volumes of data without breaking a sweat.",
+    content: "This is the full content of the blog post, which would be much longer in a real application. It would include paragraphs, headings, code samples, and possibly images.",
+    date: "May 15, 2023",
+    readTime: "8 min read",
+    category: "Cloud Infrastructure"
+  },
+  {
+    id: "2",
+    title: "Data Governance Best Practices for Enterprise",
+    excerpt: "Explore the essential strategies to maintain data quality and compliance in large organizations.",
+    content: "This is the full content of the blog post about data governance. It would include detailed explanations of governance frameworks, compliance requirements, and implementation strategies.",
+    date: "June 22, 2023",
+    readTime: "6 min read",
+    category: "Best Practices"
+  },
+  {
+    id: "3",
+    title: "The Future of Data Engineering with AI",
+    excerpt: "How artificial intelligence is transforming the field of data engineering and what it means for your career.",
+    content: "Detailed discussion of AI's impact on data engineering practices, tools, and job roles. Would include case studies and future predictions.",
+    date: "July 10, 2023",
+    readTime: "10 min read",
+    category: "Artificial Intelligence"
+  },
+  {
+    id: "4",
+    title: "Optimizing Snowflake for Cost Efficiency",
+    excerpt: "Practical tips to reduce your Snowflake costs while maintaining performance.",
+    content: "In-depth analysis of Snowflake pricing models and specific strategies to optimize queries, storage, and compute resources.",
+    date: "August 5, 2023",
+    readTime: "7 min read",
+    category: "Cloud Infrastructure"
+  }
+];
 
 // Blog post schema validation
 const blogPostSchema = z.object({
@@ -55,28 +97,8 @@ const blogPostSchema = z.object({
 type BlogFormValues = z.infer<typeof blogPostSchema>;
 
 const AdminBlog = () => {
-  // Sample blog posts data (in a real app, this would come from an API or database)
-  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([
-    {
-      id: "1",
-      title: "Building Scalable Data Pipelines in the Cloud",
-      excerpt: "Learn how to design and implement data pipelines that can handle massive volumes of data without breaking a sweat.",
-      content: "This is the full content of the blog post, which would be much longer in a real application. It would include paragraphs, headings, code samples, and possibly images.",
-      date: "May 15, 2023",
-      readTime: "8 min read",
-      category: "Cloud Infrastructure"
-    },
-    {
-      id: "2",
-      title: "Data Governance Best Practices for Enterprise",
-      excerpt: "Explore the essential strategies to maintain data quality and compliance in large organizations.",
-      content: "This is the full content of the blog post about data governance. It would include detailed explanations of governance frameworks, compliance requirements, and implementation strategies.",
-      date: "June 22, 2023",
-      readTime: "6 min read",
-      category: "Best Practices"
-    },
-  ]);
-
+  // Use the initialBlogPosts data that matches what's shown on the main site
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>(initialBlogPosts);
   const [isOpen, setIsOpen] = useState(false);
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
 
@@ -107,6 +129,10 @@ const AdminBlog = () => {
           ? { ...post, ...data } 
           : post
       ));
+      toast({
+        title: "Article updated",
+        description: `${data.title} has been updated successfully.`,
+      });
     } else {
       // Add new post with all required fields
       const newPost: BlogPost = {
@@ -119,6 +145,10 @@ const AdminBlog = () => {
         date: currentDate,
       };
       setBlogPosts([...blogPosts, newPost]);
+      toast({
+        title: "Article added",
+        description: `${data.title} has been added to your blog.`,
+      });
     }
     
     // Reset form and close dialog
@@ -143,6 +173,10 @@ const AdminBlog = () => {
   // Handle delete post
   const handleDelete = (postId: string) => {
     setBlogPosts(blogPosts.filter(post => post.id !== postId));
+    toast({
+      title: "Article deleted",
+      description: "The article has been removed from your blog.",
+    });
   };
 
   return (
