@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Plus, Pencil, Trash, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -33,6 +32,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+// Define a specific blog post type
+type BlogPost = {
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  date: string;
+  readTime: string;
+  category: string;
+};
+
 // Blog post schema validation
 const blogPostSchema = z.object({
   title: z.string().min(3, { message: "Title must be at least 3 characters" }),
@@ -46,7 +56,7 @@ type BlogFormValues = z.infer<typeof blogPostSchema>;
 
 const AdminBlog = () => {
   // Sample blog posts data (in a real app, this would come from an API or database)
-  const [blogPosts, setBlogPosts] = useState([
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([
     {
       id: "1",
       title: "Building Scalable Data Pipelines in the Cloud",
@@ -68,7 +78,7 @@ const AdminBlog = () => {
   ]);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [editingPost, setEditingPost] = useState<null | {id: string}>(null);
+  const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
 
   // Initialize form
   const form = useForm<BlogFormValues>({
@@ -98,10 +108,14 @@ const AdminBlog = () => {
           : post
       ));
     } else {
-      // Add new post
-      const newPost = {
+      // Add new post with all required fields
+      const newPost: BlogPost = {
         id: Date.now().toString(),
-        ...data,
+        title: data.title,
+        excerpt: data.excerpt,
+        content: data.content,
+        category: data.category,
+        readTime: data.readTime,
         date: currentDate,
       };
       setBlogPosts([...blogPosts, newPost]);
@@ -114,12 +128,12 @@ const AdminBlog = () => {
   };
 
   // Handle edit post
-  const handleEdit = (post: any) => {
+  const handleEdit = (post: BlogPost) => {
     setEditingPost(post);
     form.reset({
       title: post.title,
       excerpt: post.excerpt,
-      content: post.content || "",
+      content: post.content,
       category: post.category,
       readTime: post.readTime,
     });

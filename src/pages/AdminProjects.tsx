@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Plus, Pencil, Trash, Link as LinkIcon, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -33,6 +32,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+// Define the Project type
+type Project = {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  link: string;
+  github?: string; // Only github is optional
+};
+
 // Project schema validation
 const projectSchema = z.object({
   title: z.string().min(3, { message: "Title must be at least 3 characters" }),
@@ -46,7 +55,7 @@ type ProjectFormValues = z.infer<typeof projectSchema>;
 
 const AdminProjects = () => {
   // Sample projects data (in a real app, this would come from an API or database)
-  const [projects, setProjects] = useState([
+  const [projects, setProjects] = useState<Project[]>([
     {
       id: "1",
       title: "Cloud Data Lake Architecture",
@@ -66,7 +75,7 @@ const AdminProjects = () => {
   ]);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [editingProject, setEditingProject] = useState<null | {id: string}>(null);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
 
   // Initialize form
   const form = useForm<ProjectFormValues>({
@@ -90,10 +99,14 @@ const AdminProjects = () => {
           : project
       ));
     } else {
-      // Add new project
-      const newProject = {
+      // Add new project with all required fields
+      const newProject: Project = {
         id: Date.now().toString(),
-        ...data,
+        title: data.title,
+        description: data.description,
+        image: data.image,
+        link: data.link,
+        github: data.github,
       };
       setProjects([...projects, newProject]);
     }
@@ -105,7 +118,7 @@ const AdminProjects = () => {
   };
 
   // Handle edit project
-  const handleEdit = (project: any) => {
+  const handleEdit = (project: Project) => {
     setEditingProject(project);
     form.reset({
       title: project.title,
