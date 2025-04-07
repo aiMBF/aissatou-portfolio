@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -27,6 +27,13 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 const AdminLogin = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  
+  // In a real app, these would be fetched from a secure backend
+  // This is just for demo purposes - it would normally use a backend authentication system
+  const [adminCredentials, setAdminCredentials] = useState({
+    username: "admin",
+    password: "password", 
+  });
 
   // Initialize form
   const form = useForm<LoginFormValues>({
@@ -40,8 +47,7 @@ const AdminLogin = () => {
   // Handle form submission
   const onSubmit = (data: LoginFormValues) => {
     // In a real application, you would validate credentials against a backend
-    // This is a simplified example
-    if (data.username === "admin" && data.password === "password") {
+    if (data.username === adminCredentials.username && data.password === adminCredentials.password) {
       navigate("/admin/projects");
     } else {
       setError("Invalid username or password");
@@ -98,7 +104,7 @@ const AdminLogin = () => {
         </Form>
 
         <div className="mt-6 text-center text-sm text-muted-foreground">
-          <p>For demo purposes use:</p>
+          <p>Default credentials (unless changed):</p>
           <p>Username: admin</p>
           <p>Password: password</p>
         </div>

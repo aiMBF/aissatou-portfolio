@@ -12,6 +12,8 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminProjects from "./pages/AdminProjects";
 import AdminBlog from "./pages/AdminBlog";
+import AdminSkills from "./pages/AdminSkills";
+import AdminSettings from "./pages/AdminSettings";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +34,8 @@ const App = () => (
             <Route path="/admin" element={<AdminDashboard />}>
               <Route path="projects" element={<AdminProjects />} />
               <Route path="blog" element={<AdminBlog />} />
+              <Route path="skills" element={<AdminSkills />} />
+              <Route path="settings" element={<AdminSettings />} />
             </Route>
           </Routes>
         </TooltipProvider>

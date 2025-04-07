@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Book, FileText, Home } from "lucide-react";
+import { Book, FileText, Home, Settings, BarChart } from "lucide-react";
 import { Link, Outlet } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -38,6 +38,12 @@ const AdminDashboard = () => {
                   Blog Articles
                 </Button>
               </Link>
+              <Link to="/admin/skills">
+                <Button variant="ghost" className="w-full justify-start gap-2">
+                  <BarChart className="h-4 w-4" />
+                  Skills
+                </Button>
+              </Link>
             </nav>
           </div>
           
@@ -45,9 +51,19 @@ const AdminDashboard = () => {
           
           <div>
             <h2 className="text-lg font-medium mb-4">Account</h2>
-            <Button variant="ghost" className="w-full justify-start text-red-500 hover:text-red-700 hover:bg-red-100">
-              Sign Out
-            </Button>
+            <nav className="space-y-2">
+              <Link to="/admin/settings">
+                <Button variant="ghost" className="w-full justify-start gap-2">
+                  <Settings className="h-4 w-4" />
+                  Admin Settings
+                </Button>
+              </Link>
+              <Link to="/admin">
+                <Button variant="ghost" className="w-full justify-start text-red-500 hover:text-red-700 hover:bg-red-100">
+                  Sign Out
+                </Button>
+              </Link>
+            </nav>
           </div>
         </aside>
         

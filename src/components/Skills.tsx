@@ -2,6 +2,8 @@
 import { m } from "framer-motion";
 
 export const Skills = () => {
+  // This data would come from a backend/API in a real application
+  // The structure matches what's in AdminSkills.tsx
   const skillCategories = [
     {
       category: "Cloud Platforms",
