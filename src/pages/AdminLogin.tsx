@@ -14,7 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Lock, AlertCircle, Google } from "lucide-react";
+import { Lock, AlertCircle, Mail } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
@@ -122,7 +122,7 @@ const AdminLogin = () => {
             variant="outline"
             disabled={isLoading}
           >
-            <Google className="mr-2 h-4 w-4" />
+            <Mail className="mr-2 h-4 w-4" />
             Sign in with Google
           </Button>
           
