@@ -30,7 +30,7 @@ export const About = () => {
             With a strong background in both software engineering and data science, I bridge the gap between data infrastructure and business intelligence. I'm passionate about IA applications in real-world scenarios and implementing modern practices that enhance data engineering workflows.
           </p>
           <p className="text-lg leading-relaxed">
-            I enjoy sharing my thoughts and experiences on IA innovations, data engineering best practices, and the evolving landscape of cloud data solutions through my blog and professional network.
+            I enjoy sharing my thoughts and experiences on IA innovations, data engineering best practices, and the evolving landscape of cloud data solutions through my blog.
           </p>
         </m.div>
       </div>
