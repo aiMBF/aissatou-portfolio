@@ -5,7 +5,7 @@ import { ArrowRight, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const Blog = () => {
-  // Featured blog posts to display on the homepage
+  // Get the featured blog posts from the same data source as AdminBlog
   const featuredPosts = [
     {
       id: "1",

@@ -6,12 +6,14 @@ import {
   CarouselContent,
   CarouselItem,
   CarouselNext,
-  CarouselPrevious
+  CarouselPrevious,
 } from "@/components/ui/carousel";
 
 export const Projects = () => {
+  // Use the same projects data as AdminProjects
   const projects = [
     {
+      id: "1",
       title: "Cloud Data Lake Architecture",
       description: "Designed and implemented a data lake solution on AWS S3 with Glue ETL pipelines and Athena for analytics.",
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71",
@@ -19,6 +21,7 @@ export const Projects = () => {
       github: "https://github.com/username/data-lake-architecture"
     },
     {
+      id: "2",
       title: "Real-time Analytics Platform",
       description: "Built a streaming data platform using Apache Kafka, Spark Streaming, and Google BigQuery.",
       image: "https://images.unsplash.com/photo-1551434678-e076c223a692",
@@ -26,6 +29,7 @@ export const Projects = () => {
       github: "https://github.com/username/realtime-analytics"
     },
     {
+      id: "3",
       title: "Enterprise Data Warehouse",
       description: "Migrated an on-premise data warehouse to Snowflake, improving query performance by 10x.",
       image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f",
@@ -33,18 +37,12 @@ export const Projects = () => {
       github: "https://github.com/username/enterprise-data-warehouse"
     },
     {
+      id: "4",
       title: "IA Pipeline Orchestration",
       description: "Created a robust IA pipeline using Airflow and MLflow for model training, tracking, and deployment.",
       image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c",
       link: "#",
       github: "https://github.com/username/ia-pipeline-orchestration"
-    },
-    {
-      title: "Data Infrastructure as Code",
-      description: "Implemented infrastructure as code using Terraform and AWS CloudFormation for scalable deployments.",
-      image: "https://images.unsplash.com/photo-1516110833967-0b5716ca1387",
-      link: "#",
-      github: "https://github.com/username/infrastructure-as-code"
     }
   ];
 
