@@ -1,4 +1,3 @@
-
 import { create } from 'zustand';
 
 // Define the skill category type
@@ -97,10 +96,7 @@ export const useSkillsStore = create<SkillsStore>((set) => ({
   updateSkill: (categoryId, oldSkill, newSkill) => set((state) => {
     const newCategories = state.skillCategories.map((cat) => 
       cat.id === categoryId ? 
-        { 
-          ...cat, 
-          skills: cat.skills.map((s) => s === oldSkill ? newSkill : s) 
-        } : 
+        { ...cat, skills: cat.skills.map((s) => s === oldSkill ? newSkill : s) } : 
         cat
     );
     localStorage.setItem('skillCategories', JSON.stringify(newCategories));
