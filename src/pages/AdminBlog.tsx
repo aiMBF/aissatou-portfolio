@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Plus, Pencil, Trash, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -66,14 +67,14 @@ const AdminBlog = () => {
   // Handle form submission
   const onSubmit = (data: BlogFormValues) => {
     if (editingPost) {
-      // Update existing post
+      // Update existing post - now the type is Partial<Omit<BlogPost, "id" | "date">>
       updateBlogPost(editingPost.id, data);
       toast({
         title: "Article updated",
         description: `${data.title} has been updated successfully.`,
       });
     } else {
-      // Add new post
+      // Add new post - all required fields are provided from the form validation
       addBlogPost(data);
       toast({
         title: "Article added",

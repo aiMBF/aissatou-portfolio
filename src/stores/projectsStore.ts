@@ -15,7 +15,7 @@ type ProjectsStore = {
   projects: Project[];
   setProjects: (projects: Project[]) => void;
   addProject: (project: Omit<Project, 'id'>) => void;
-  updateProject: (id: string, project: Omit<Project, 'id'>) => void;
+  updateProject: (id: string, project: Partial<Omit<Project, 'id'>>) => void;
   deleteProject: (id: string) => void;
 };
 

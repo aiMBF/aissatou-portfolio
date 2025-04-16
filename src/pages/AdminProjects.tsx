@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Plus, Pencil, Trash, Link as LinkIcon, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -66,14 +67,14 @@ const AdminProjects = () => {
   // Handle form submission
   const onSubmit = (data: ProjectFormValues) => {
     if (editingProject) {
-      // Update existing project
+      // Update existing project - now the type is Partial<Omit<Project, "id">>
       updateProject(editingProject.id, data);
       toast({
         title: "Project updated",
         description: `${data.title} has been updated successfully.`,
       });
     } else {
-      // Add new project
+      // Add new project - all required fields are provided by form validation
       addProject(data);
       toast({
         title: "Project added",
