@@ -1,27 +1,10 @@
 
 import { m } from "framer-motion";
+import { useSkillsStore } from "@/stores/skillsStore";
 
 export const Skills = () => {
-  // This data would come from a backend/API in a real application
-  // The structure matches what's in AdminSkills.tsx
-  const skillCategories = [
-    {
-      category: "Cloud Platforms",
-      skills: ["AWS", "Google Cloud", "Azure", "Snowflake"]
-    },
-    {
-      category: "Data Processing",
-      skills: ["Apache Spark", "Hadoop", "Kafka", "Airflow"]
-    },
-    {
-      category: "Programming",
-      skills: ["Python", "SQL", "Scala", "Java"]
-    },
-    {
-      category: "Analytics & BI",
-      skills: ["Tableau", "Power BI", "dbt", "Looker"]
-    }
-  ];
+  // Use the skills store to get the same data as AdminSkills
+  const { skillCategories } = useSkillsStore();
 
   return (
     <section id="skills" className="bg-secondary section-padding">
@@ -69,4 +52,3 @@ export const Skills = () => {
     </section>
   );
 };
-

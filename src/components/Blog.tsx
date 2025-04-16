@@ -3,46 +3,14 @@ import { m } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useBlogStore } from "@/stores/blogStore";
 
 export const Blog = () => {
-  // Get the featured blog posts from the same data source as AdminBlog
-  const featuredPosts = [
-    {
-      id: "1",
-      title: "Building Scalable Data Pipelines in the Cloud",
-      excerpt: "Learn how to design and implement data pipelines that can handle massive volumes of data without breaking a sweat.",
-      date: "May 15, 2023",
-      readTime: "8 min read",
-      category: "Cloud Infrastructure"
-    },
-    {
-      id: "2",
-      title: "Data Governance Best Practices for Enterprise",
-      excerpt: "Explore the essential strategies to maintain data quality and compliance in large organizations.",
-      date: "June 22, 2023",
-      readTime: "6 min read",
-      category: "Best Practices"
-    },
-    {
-      id: "3",
-      title: "IA for Anomaly Detection in Production",
-      excerpt: "How to implement IA models that can detect unusual patterns in your data streams and trigger automated responses.",
-      date: "August 5, 2023",
-      readTime: "7 min read",
-      category: "IA"
-    },
-    {
-      id: "4",
-      title: "CI/CD Pipelines for Data Engineering Projects",
-      excerpt: "A practical guide to implementing modern practices in data engineering workflows for faster and more reliable deployments.",
-      date: "September 18, 2023",
-      readTime: "9 min read",
-      category: "Data Infrastructure"
-    }
-  ];
+  // Use the blog store to get the same data as AdminBlog
+  const { blogPosts } = useBlogStore();
 
   // Display only 2 posts in the homepage section
-  const homepagePosts = featuredPosts.slice(0, 2);
+  const homepagePosts = blogPosts.slice(0, 2);
 
   return (
     <section id="blog" className="section-padding bg-secondary/30">

@@ -13,64 +13,16 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-
-// Sample blog post data
-const allBlogPosts = [
-  {
-    id: "1",
-    title: "Building Scalable Data Pipelines in the Cloud",
-    excerpt: "Learn how to design and implement data pipelines that can handle massive volumes of data without breaking a sweat.",
-    date: "May 15, 2023",
-    readTime: "8 min read",
-    category: "Cloud Infrastructure"
-  },
-  {
-    id: "2",
-    title: "Data Governance Best Practices for Enterprise",
-    excerpt: "Explore the essential strategies to maintain data quality and compliance in large organizations.",
-    date: "June 22, 2023",
-    readTime: "6 min read",
-    category: "Best Practices"
-  },
-  {
-    id: "3",
-    title: "IA for Anomaly Detection in Production",
-    excerpt: "How to implement IA models that can detect unusual patterns in your data streams and trigger automated responses.",
-    date: "August 5, 2023",
-    readTime: "7 min read",
-    category: "IA"
-  },
-  {
-    id: "4",
-    title: "CI/CD Pipelines for Data Engineering Projects",
-    excerpt: "A practical guide to implementing modern practices in data engineering workflows for faster and more reliable deployments.",
-    date: "September 18, 2023",
-    readTime: "9 min read",
-    category: "Data Infrastructure"
-  },
-  {
-    id: "5",
-    title: "Implementing IA-Powered Data Quality Checks",
-    excerpt: "Using artificial intelligence to automatically detect and flag data quality issues in your data pipelines.",
-    date: "October 12, 2023",
-    readTime: "9 min read",
-    category: "IA"
-  },
-  {
-    id: "6",
-    title: "Container Orchestration for Data Processing Workloads",
-    excerpt: "Best practices for running data processing jobs in Kubernetes and other container orchestration platforms.",
-    date: "November 18, 2023",
-    readTime: "12 min read",
-    category: "Data Infrastructure"
-  }
-];
+import { useBlogStore } from "@/stores/blogStore";
 
 const BlogPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   
+  // Use the blog store to get the same data as AdminBlog and Blog components
+  const { blogPosts } = useBlogStore();
+  
   // Filter posts based on search query
-  const filteredPosts = allBlogPosts.filter(post => 
+  const filteredPosts = blogPosts.filter(post => 
     post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
     post.category.toLowerCase().includes(searchQuery.toLowerCase())

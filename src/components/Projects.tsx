@@ -8,43 +8,14 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useProjectsStore } from "@/stores/projectsStore";
 
 export const Projects = () => {
-  // Use the same projects data as AdminProjects
-  const projects = [
-    {
-      id: "1",
-      title: "Cloud Data Lake Architecture",
-      description: "Designed and implemented a data lake solution on AWS S3 with Glue ETL pipelines and Athena for analytics.",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71",
-      link: "#",
-      github: "https://github.com/username/data-lake-architecture"
-    },
-    {
-      id: "2",
-      title: "Real-time Analytics Platform",
-      description: "Built a streaming data platform using Apache Kafka, Spark Streaming, and Google BigQuery.",
-      image: "https://images.unsplash.com/photo-1551434678-e076c223a692",
-      link: "#",
-      github: "https://github.com/username/realtime-analytics"
-    },
-    {
-      id: "3",
-      title: "Enterprise Data Warehouse",
-      description: "Migrated an on-premise data warehouse to Snowflake, improving query performance by 10x.",
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f",
-      link: "#",
-      github: "https://github.com/username/enterprise-data-warehouse"
-    },
-    {
-      id: "4",
-      title: "IA Pipeline Orchestration",
-      description: "Created a robust IA pipeline using Airflow and MLflow for model training, tracking, and deployment.",
-      image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c",
-      link: "#",
-      github: "https://github.com/username/ia-pipeline-orchestration"
-    }
-  ];
+  // Use the projects store to get the same data as AdminProjects
+  const { projects } = useProjectsStore();
+
+  // Display only up to 4 projects in the carousel for the homepage
+  const displayProjects = projects.slice(0, 4);
 
   return (
     <section id="projects" className="section-padding">
@@ -69,8 +40,8 @@ export const Projects = () => {
             className="w-full"
           >
             <CarouselContent>
-              {projects.map((project, index) => (
-                <CarouselItem key={project.title} className="md:basis-1/2 lg:basis-1/3 pl-4">
+              {displayProjects.map((project, index) => (
+                <CarouselItem key={project.id} className="md:basis-1/2 lg:basis-1/3 pl-4">
                   <m.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}

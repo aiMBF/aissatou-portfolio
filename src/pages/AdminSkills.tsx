@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Plus, Pencil, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -38,13 +37,8 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
-
-// Define the SkillCategory type
-type SkillCategory = {
-  id: string;
-  category: string;
-  skills: string[];
-};
+import { useSkillsStore } from "@/stores/skillsStore";
+import { toast } from "@/hooks/use-toast";
 
 // Skill category schema validation
 const skillCategorySchema = z.object({
@@ -61,35 +55,20 @@ type SkillCategoryFormValues = z.infer<typeof skillCategorySchema>;
 type SkillFormValues = z.infer<typeof skillSchema>;
 
 const AdminSkills = () => {
-  // Sample skill categories data (in a real app, this would come from an API or database)
-  const [skillCategories, setSkillCategories] = useState<SkillCategory[]>([
-    {
-      id: "1",
-      category: "Cloud Platforms",
-      skills: ["AWS", "Google Cloud", "Azure", "Snowflake"]
-    },
-    {
-      id: "2",
-      category: "Data Processing",
-      skills: ["Apache Spark", "Hadoop", "Kafka", "Airflow"]
-    },
-    {
-      id: "3",
-      category: "Programming",
-      skills: ["Python", "SQL", "Scala", "Java"]
-    },
-    {
-      id: "4",
-      category: "Analytics & BI",
-      skills: ["Tableau", "Power BI", "dbt", "Looker"]
-    }
-  ]);
+  const { 
+    skillCategories, 
+    addSkillCategory, 
+    updateSkillCategory, 
+    deleteSkillCategory,
+    addSkill,
+    updateSkill,
+    deleteSkill
+  } = useSkillsStore();
 
   const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false);
   const [isSkillDialogOpen, setIsSkillDialogOpen] = useState(false);
-  const [editingCategory, setEditingCategory] = useState<SkillCategory | null>(null);
+  const [editingCategory, setEditingCategory] = useState<{id: string, category: string} | null>(null);
   const [editingSkill, setEditingSkill] = useState<{name: string, categoryId: string} | null>(null);
-  const [skillToDelete, setSkillToDelete] = useState<{name: string, categoryId: string} | null>(null);
 
   // Initialize category form
   const categoryForm = useForm<SkillCategoryFormValues>({
@@ -112,19 +91,18 @@ const AdminSkills = () => {
   const onCategorySubmit = (data: SkillCategoryFormValues) => {
     if (editingCategory) {
       // Update existing category
-      setSkillCategories(skillCategories.map(category => 
-        category.id === editingCategory.id 
-          ? { ...category, category: data.category } 
-          : category
-      ));
+      updateSkillCategory(editingCategory.id, data.category);
+      toast({
+        title: "Category updated",
+        description: `${data.category} has been updated successfully.`,
+      });
     } else {
       // Add new category
-      const newCategory: SkillCategory = {
-        id: Date.now().toString(),
-        category: data.category,
-        skills: [],
-      };
-      setSkillCategories([...skillCategories, newCategory]);
+      addSkillCategory(data.category);
+      toast({
+        title: "Category added",
+        description: `${data.category} has been added successfully.`,
+      });
     }
     
     // Reset form and close dialog
@@ -138,23 +116,30 @@ const AdminSkills = () => {
     const categoryId = data.categoryId;
     const skillName = data.name;
 
-    setSkillCategories(skillCategories.map(category => {
-      if (category.id === categoryId) {
-        if (editingSkill) {
-          // Update existing skill
-          const updatedSkills = category.skills.map(skill => 
-            skill === editingSkill.name ? skillName : skill
-          );
-          return { ...category, skills: updatedSkills };
-        } else {
-          // Add new skill if it doesn't already exist
-          if (!category.skills.includes(skillName)) {
-            return { ...category, skills: [...category.skills, skillName] };
-          }
-        }
+    if (editingSkill) {
+      // Update existing skill
+      updateSkill(categoryId, editingSkill.name, skillName);
+      toast({
+        title: "Skill updated",
+        description: `${skillName} has been updated successfully.`,
+      });
+    } else {
+      // Add new skill
+      const category = skillCategories.find(cat => cat.id === categoryId);
+      if (category && !category.skills.includes(skillName)) {
+        addSkill(categoryId, skillName);
+        toast({
+          title: "Skill added",
+          description: `${skillName} has been added to ${category.category}.`,
+        });
+      } else if (category) {
+        toast({
+          title: "Skill already exists",
+          description: `${skillName} already exists in ${category.category}.`,
+          variant: "destructive",
+        });
       }
-      return category;
-    }));
+    }
     
     // Reset form and close dialog
     skillForm.reset();
@@ -163,17 +148,21 @@ const AdminSkills = () => {
   };
 
   // Handle edit category
-  const handleEditCategory = (category: SkillCategory) => {
-    setEditingCategory(category);
+  const handleEditCategory = (id: string, category: string) => {
+    setEditingCategory({id, category});
     categoryForm.reset({
-      category: category.category,
+      category: category,
     });
     setIsCategoryDialogOpen(true);
   };
 
   // Handle delete category
-  const handleDeleteCategory = (categoryId: string) => {
-    setSkillCategories(skillCategories.filter(category => category.id !== categoryId));
+  const handleDeleteCategory = (id: string) => {
+    deleteSkillCategory(id);
+    toast({
+      title: "Category deleted",
+      description: "The category has been removed successfully.",
+    });
   };
 
   // Handle edit skill
@@ -188,15 +177,11 @@ const AdminSkills = () => {
 
   // Handle delete skill
   const handleDeleteSkill = (categoryId: string, skillName: string) => {
-    setSkillCategories(skillCategories.map(category => {
-      if (category.id === categoryId) {
-        return {
-          ...category,
-          skills: category.skills.filter(skill => skill !== skillName)
-        };
-      }
-      return category;
-    }));
+    deleteSkill(categoryId, skillName);
+    toast({
+      title: "Skill deleted",
+      description: `${skillName} has been removed successfully.`,
+    });
   };
 
   return (
@@ -318,7 +303,7 @@ const AdminSkills = () => {
             <div className="bg-muted px-4 py-3 flex justify-between items-center">
               <h2 className="text-lg font-medium">{category.category}</h2>
               <div className="flex space-x-2">
-                <Button variant="ghost" size="sm" onClick={() => handleEditCategory(category)}>
+                <Button variant="ghost" size="sm" onClick={() => handleEditCategory(category.id, category.category)}>
                   <Pencil className="h-4 w-4" />
                 </Button>
                 <Button 
