@@ -8,7 +8,7 @@ export type Project = {
   description: string;
   image: string;
   link: string;
-  github?: string; // Only github is optional
+  github?: string;
 };
 
 type ProjectsStore = {
@@ -17,6 +17,12 @@ type ProjectsStore = {
   addProject: (project: Omit<Project, 'id'>) => void;
   updateProject: (id: string, project: Partial<Omit<Project, 'id'>>) => void;
   deleteProject: (id: string) => void;
+};
+
+// Get initial data from localStorage or use default
+const getInitialProjects = () => {
+  const saved = localStorage.getItem('projects');
+  return saved ? JSON.parse(saved) : initialProjects;
 };
 
 // Initial projects that match what's in AdminProjects.tsx
@@ -64,27 +70,36 @@ const initialProjects: Project[] = [
 ];
 
 export const useProjectsStore = create<ProjectsStore>((set) => ({
-  projects: initialProjects,
+  projects: getInitialProjects(),
   
-  setProjects: (projects) => set({ projects }),
+  setProjects: (projects) => {
+    localStorage.setItem('projects', JSON.stringify(projects));
+    set({ projects });
+  },
   
-  addProject: (project) => set((state) => ({
-    projects: [
+  addProject: (project) => set((state) => {
+    const newProjects = [
       ...state.projects,
       {
         id: Date.now().toString(),
         ...project
       }
-    ]
-  })),
+    ];
+    localStorage.setItem('projects', JSON.stringify(newProjects));
+    return { projects: newProjects };
+  }),
   
-  updateProject: (id, project) => set((state) => ({
-    projects: state.projects.map((p) => 
+  updateProject: (id, project) => set((state) => {
+    const newProjects = state.projects.map((p) => 
       p.id === id ? { ...p, ...project } : p
-    )
-  })),
+    );
+    localStorage.setItem('projects', JSON.stringify(newProjects));
+    return { projects: newProjects };
+  }),
   
-  deleteProject: (id) => set((state) => ({
-    projects: state.projects.filter((p) => p.id !== id)
-  }))
+  deleteProject: (id) => set((state) => {
+    const newProjects = state.projects.filter((p) => p.id !== id);
+    localStorage.setItem('projects', JSON.stringify(newProjects));
+    return { projects: newProjects };
+  })
 }));

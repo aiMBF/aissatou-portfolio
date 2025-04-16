@@ -20,6 +20,12 @@ type BlogStore = {
   deleteBlogPost: (id: string) => void;
 };
 
+// Get initial data from localStorage or use default
+const getInitialBlogPosts = () => {
+  const saved = localStorage.getItem('blogPosts');
+  return saved ? JSON.parse(saved) : initialBlogPosts;
+};
+
 // Initial blog posts that match what's in AdminBlog.tsx
 const initialBlogPosts: BlogPost[] = [
   {
@@ -61,9 +67,12 @@ const initialBlogPosts: BlogPost[] = [
 ];
 
 export const useBlogStore = create<BlogStore>((set) => ({
-  blogPosts: initialBlogPosts,
+  blogPosts: getInitialBlogPosts(),
   
-  setBlogPosts: (blogPosts) => set({ blogPosts }),
+  setBlogPosts: (blogPosts) => {
+    localStorage.setItem('blogPosts', JSON.stringify(blogPosts));
+    set({ blogPosts });
+  },
   
   addBlogPost: (post) => set((state) => {
     const currentDate = new Date().toLocaleDateString('en-US', {
@@ -72,25 +81,30 @@ export const useBlogStore = create<BlogStore>((set) => ({
       day: 'numeric'
     });
     
-    return {
-      blogPosts: [
-        ...state.blogPosts,
-        {
-          id: Date.now().toString(),
-          date: currentDate,
-          ...post
-        }
-      ]
-    };
+    const newPosts = [
+      ...state.blogPosts,
+      {
+        id: Date.now().toString(),
+        date: currentDate,
+        ...post
+      }
+    ];
+    
+    localStorage.setItem('blogPosts', JSON.stringify(newPosts));
+    return { blogPosts: newPosts };
   }),
   
-  updateBlogPost: (id, post) => set((state) => ({
-    blogPosts: state.blogPosts.map((p) => 
+  updateBlogPost: (id, post) => set((state) => {
+    const newPosts = state.blogPosts.map((p) => 
       p.id === id ? { ...p, ...post } : p
-    )
-  })),
+    );
+    localStorage.setItem('blogPosts', JSON.stringify(newPosts));
+    return { blogPosts: newPosts };
+  }),
   
-  deleteBlogPost: (id) => set((state) => ({
-    blogPosts: state.blogPosts.filter((p) => p.id !== id)
-  }))
+  deleteBlogPost: (id) => set((state) => {
+    const newPosts = state.blogPosts.filter((p) => p.id !== id);
+    localStorage.setItem('blogPosts', JSON.stringify(newPosts));
+    return { blogPosts: newPosts };
+  })
 }));

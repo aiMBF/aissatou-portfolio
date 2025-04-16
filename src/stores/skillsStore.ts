@@ -19,6 +19,12 @@ type SkillsStore = {
   deleteSkill: (categoryId: string, skill: string) => void;
 };
 
+// Get initial data from localStorage or use default
+const getInitialSkillCategories = () => {
+  const saved = localStorage.getItem('skillCategories');
+  return saved ? JSON.parse(saved) : initialSkillCategories;
+};
+
 // Initial skill categories that match what's in AdminSkills.tsx
 const initialSkillCategories: SkillCategory[] = [
   {
@@ -44,55 +50,70 @@ const initialSkillCategories: SkillCategory[] = [
 ];
 
 export const useSkillsStore = create<SkillsStore>((set) => ({
-  skillCategories: initialSkillCategories,
+  skillCategories: getInitialSkillCategories(),
   
-  setSkillCategories: (skillCategories) => set({ skillCategories }),
+  setSkillCategories: (skillCategories) => {
+    localStorage.setItem('skillCategories', JSON.stringify(skillCategories));
+    set({ skillCategories });
+  },
   
-  addSkillCategory: (category) => set((state) => ({
-    skillCategories: [
+  addSkillCategory: (category) => set((state) => {
+    const newCategories = [
       ...state.skillCategories,
       {
         id: Date.now().toString(),
         category,
         skills: []
       }
-    ]
-  })),
+    ];
+    localStorage.setItem('skillCategories', JSON.stringify(newCategories));
+    return { skillCategories: newCategories };
+  }),
   
-  updateSkillCategory: (id, category) => set((state) => ({
-    skillCategories: state.skillCategories.map((cat) => 
+  updateSkillCategory: (id, category) => set((state) => {
+    const newCategories = state.skillCategories.map((cat) => 
       cat.id === id ? { ...cat, category } : cat
-    )
-  })),
+    );
+    localStorage.setItem('skillCategories', JSON.stringify(newCategories));
+    return { skillCategories: newCategories };
+  }),
   
-  deleteSkillCategory: (id) => set((state) => ({
-    skillCategories: state.skillCategories.filter((cat) => cat.id !== id)
-  })),
+  deleteSkillCategory: (id) => set((state) => {
+    const newCategories = state.skillCategories.filter((cat) => cat.id !== id);
+    localStorage.setItem('skillCategories', JSON.stringify(newCategories));
+    return { skillCategories: newCategories };
+  }),
   
-  addSkill: (categoryId, skill) => set((state) => ({
-    skillCategories: state.skillCategories.map((cat) => 
+  addSkill: (categoryId, skill) => set((state) => {
+    const newCategories = state.skillCategories.map((cat) => 
       cat.id === categoryId ? 
         { ...cat, skills: [...cat.skills, skill] } : 
         cat
-    )
-  })),
+    );
+    localStorage.setItem('skillCategories', JSON.stringify(newCategories));
+    return { skillCategories: newCategories };
+  }),
   
-  updateSkill: (categoryId, oldSkill, newSkill) => set((state) => ({
-    skillCategories: state.skillCategories.map((cat) => 
+  updateSkill: (categoryId, oldSkill, newSkill) => set((state) => {
+    const newCategories = state.skillCategories.map((cat) => 
       cat.id === categoryId ? 
         { 
           ...cat, 
           skills: cat.skills.map((s) => s === oldSkill ? newSkill : s) 
         } : 
         cat
-    )
-  })),
+    );
+    localStorage.setItem('skillCategories', JSON.stringify(newCategories));
+    return { skillCategories: newCategories };
+  }),
   
-  deleteSkill: (categoryId, skill) => set((state) => ({
-    skillCategories: state.skillCategories.map((cat) => 
+  deleteSkill: (categoryId, skill) => set((state) => {
+    const newCategories = state.skillCategories.map((cat) => 
       cat.id === categoryId ? 
         { ...cat, skills: cat.skills.filter((s) => s !== skill) } : 
         cat
-    )
-  }))
+    );
+    localStorage.setItem('skillCategories', JSON.stringify(newCategories));
+    return { skillCategories: newCategories };
+  })
 }));
