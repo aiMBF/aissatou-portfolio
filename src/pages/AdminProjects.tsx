@@ -67,15 +67,22 @@ const AdminProjects = () => {
   // Handle form submission
   const onSubmit = (data: ProjectFormValues) => {
     if (editingProject) {
-      // Update existing project - now the type is Partial<Omit<Project, "id">>
+      // Update existing project
       updateProject(editingProject.id, data);
       toast({
         title: "Project updated",
         description: `${data.title} has been updated successfully.`,
       });
     } else {
-      // Add new project - all required fields are provided by form validation
-      addProject(data);
+      // Add new project with required fields
+      const newProject: Omit<Project, 'id'> = {
+        title: data.title,
+        description: data.description,
+        image: data.image,
+        link: data.link,
+        github: data.github
+      };
+      addProject(newProject);
       toast({
         title: "Project added",
         description: `${data.title} has been added to your projects.`,

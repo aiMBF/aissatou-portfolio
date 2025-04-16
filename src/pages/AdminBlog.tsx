@@ -67,15 +67,22 @@ const AdminBlog = () => {
   // Handle form submission
   const onSubmit = (data: BlogFormValues) => {
     if (editingPost) {
-      // Update existing post - now the type is Partial<Omit<BlogPost, "id" | "date">>
+      // Update existing post
       updateBlogPost(editingPost.id, data);
       toast({
         title: "Article updated",
         description: `${data.title} has been updated successfully.`,
       });
     } else {
-      // Add new post - all required fields are provided from the form validation
-      addBlogPost(data);
+      // Add new post with required fields
+      const newPost: Omit<BlogPost, 'id' | 'date'> = {
+        title: data.title,
+        excerpt: data.excerpt,
+        content: data.content,
+        category: data.category,
+        readTime: data.readTime
+      };
+      addBlogPost(newPost);
       toast({
         title: "Article added",
         description: `${data.title} has been added to your blog.`,
