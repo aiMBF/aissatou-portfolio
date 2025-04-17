@@ -1,35 +1,17 @@
-import { create } from 'zustand';
+
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
+import { SkillCategory } from '@/types/skills';
+import { StateCreator } from 'zustand';
+import { SkillsStore } from '@/types/skills';
 
-type SkillCategory = {
-  id: string;
-  category: string;
-  skills: string[];
-};
-
-type SkillsStore = {
-  skillCategories: SkillCategory[];
-  setSkillCategories: (skillCategories: SkillCategory[]) => void;
-  fetchSkillCategories: () => Promise<void>;
-  
-  // Add CRUD operations
-  addSkillCategory: (categoryName: string) => Promise<void>;
-  updateSkillCategory: (id: string, categoryName: string) => Promise<void>;
-  deleteSkillCategory: (id: string) => Promise<void>;
-  addSkill: (categoryId: string, skillName: string) => Promise<void>;
-  updateSkill: (categoryId: string, oldSkillName: string, newSkillName: string) => Promise<void>;
-  deleteSkill: (categoryId: string, skillName: string) => Promise<void>;
-};
-
-export const useSkillsStore = create<SkillsStore>((set, get) => ({
+export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore> = (set, get) => ({
   skillCategories: [],
   
   setSkillCategories: (skillCategories) => set({ skillCategories }),
   
   fetchSkillCategories: async () => {
     try {
-      // First, fetch all categories
       const { data: categoriesData, error: categoriesError } = await supabase
         .from('category_skill')
         .select('*')
@@ -40,7 +22,6 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
         return;
       }
 
-      // Next, fetch all skills
       const { data: skillsData, error: skillsError } = await supabase
         .from('skill')
         .select('*');
@@ -50,13 +31,11 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
         return;
       }
 
-      // Transform and combine the data
       const skillCategories = categoriesData.map(category => {
-        // Find skills for this category
         const categorySkills = skillsData
           .filter(skill => skill.category === category.id)
           .map(skill => skill.skill_name)
-          .filter(Boolean); // Filter out null/undefined
+          .filter(Boolean);
 
         return {
           id: category.id.toString(),
@@ -72,7 +51,6 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
   },
   
   addSkillCategory: async (categoryName) => {
-    // Insert a new category
     const { data, error } = await supabase
       .from('category_skill')
       .insert({ category_name: categoryName, skills: [] })
@@ -89,7 +67,6 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
       return;
     }
 
-    // Add the new category to the state
     const newCategory = {
       id: data.id.toString(),
       category: data.category_name || '',
@@ -102,10 +79,8 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
   },
   
   updateSkillCategory: async (id, categoryName) => {
-    // Convert string id to number for the database operation
     const numericId = parseInt(id, 10);
     
-    // Update the category
     const { error } = await supabase
       .from('category_skill')
       .update({ category_name: categoryName })
@@ -121,7 +96,6 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
       return;
     }
 
-    // Update the category in the state
     set(state => ({
       skillCategories: state.skillCategories.map(cat => 
         cat.id === id ? { ...cat, category: categoryName } : cat
@@ -130,10 +104,8 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
   },
   
   deleteSkillCategory: async (id) => {
-    // Convert string id to number for the database operation
     const numericId = parseInt(id, 10);
     
-    // Delete the category
     const { error } = await supabase
       .from('category_skill')
       .delete()
@@ -149,7 +121,6 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
       return;
     }
 
-    // Remove the category from the state
     set(state => ({
       skillCategories: state.skillCategories.filter(cat => cat.id !== id)
     }));
@@ -169,10 +140,8 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
     
     const updatedSkills = [...category.skills, skillName];
     
-    // Convert string id to number for the database operation
     const numericId = parseInt(categoryId, 10);
     
-    // Update the skills in the database
     const { error } = await supabase
       .from('category_skill')
       .update({ skills: updatedSkills })
@@ -188,7 +157,6 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
       return;
     }
 
-    // Update the skills in the state
     set(state => ({
       skillCategories: state.skillCategories.map(cat => 
         cat.id === categoryId ? { ...cat, skills: updatedSkills } : cat
@@ -198,7 +166,6 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
   
   updateSkill: async (categoryId, oldSkillName, newSkillName) => {
     try {
-      // First find the skill ID
       const { data: skillData, error: findError } = await supabase
         .from('skill')
         .select('id')
@@ -216,7 +183,6 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
         return;
       }
 
-      // Update the skill
       const { error: updateError } = await supabase
         .from('skill')
         .update({ skill_name: newSkillName })
@@ -232,7 +198,6 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
         return;
       }
 
-      // After updating, fetch all skills again
       await get().fetchSkillCategories();
       
       toast({
@@ -246,7 +211,6 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
   
   deleteSkill: async (categoryId, skillName) => {
     try {
-      // First find the skill ID
       const { data: skillData, error: findError } = await supabase
         .from('skill')
         .select('id')
@@ -264,7 +228,6 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
         return;
       }
 
-      // Delete the skill
       const { error: deleteError } = await supabase
         .from('skill')
         .delete()
@@ -280,7 +243,6 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
         return;
       }
 
-      // After deleting, fetch all skills again
       await get().fetchSkillCategories();
       
       toast({
@@ -291,4 +253,4 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
       console.error('Error in deleteSkill:', error);
     }
   },
-}));
+});

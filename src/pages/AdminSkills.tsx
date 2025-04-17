@@ -37,7 +37,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
-import { useSkillsStore } from "@/stores/skillsStore";
+import { useSkillsStore } from "@/stores/skills/skillsStore";
 import { toast } from "@/hooks/use-toast";
 
 // Skill category schema validation

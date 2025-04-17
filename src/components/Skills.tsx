@@ -1,12 +1,10 @@
-
 import { m } from "framer-motion";
-import { useSkillsStore } from "@/stores/skillsStore";
+import { useSkillsStore } from "@/stores/skills/skillsStore";
 import { useEffect } from "react";
 
 export const Skills = () => {
   const { skillCategories, fetchSkillCategories } = useSkillsStore();
   
-  // Fetch skills data when component mounts
   useEffect(() => {
     fetchSkillCategories();
   }, [fetchSkillCategories]);
