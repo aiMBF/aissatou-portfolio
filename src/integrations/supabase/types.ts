@@ -14,7 +14,9 @@ export type Database = {
           category: number | null
           content: string | null
           created_at: string
+          excerpt: string | null
           id: number
+          read_time: string | null
           summary: string | null
           title: string | null
         }
@@ -22,7 +24,9 @@ export type Database = {
           category?: number | null
           content?: string | null
           created_at?: string
+          excerpt?: string | null
           id?: number
+          read_time?: string | null
           summary?: string | null
           title?: string | null
         }
@@ -30,7 +34,9 @@ export type Database = {
           category?: number | null
           content?: string | null
           created_at?: string
+          excerpt?: string | null
           id?: number
+          read_time?: string | null
           summary?: string | null
           title?: string | null
         }
@@ -64,16 +70,19 @@ export type Database = {
           category_name: string | null
           created_at: string
           id: number
+          skills: string[] | null
         }
         Insert: {
           category_name?: string | null
           created_at?: string
           id?: number
+          skills?: string[] | null
         }
         Update: {
           category_name?: string | null
           created_at?: string
           id?: number
+          skills?: string[] | null
         }
         Relationships: []
       }
@@ -84,6 +93,7 @@ export type Database = {
           github_url: string | null
           id: number
           image_cover: string | null
+          link: string | null
           title: string | null
         }
         Insert: {
@@ -92,6 +102,7 @@ export type Database = {
           github_url?: string | null
           id?: number
           image_cover?: string | null
+          link?: string | null
           title?: string | null
         }
         Update: {
@@ -100,6 +111,7 @@ export type Database = {
           github_url?: string | null
           id?: number
           image_cover?: string | null
+          link?: string | null
           title?: string | null
         }
         Relationships: []

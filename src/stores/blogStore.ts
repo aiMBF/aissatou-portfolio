@@ -1,7 +1,7 @@
 
 import { create } from 'zustand';
+import { supabase } from '@/integrations/supabase/client';
 
-// Define a specific blog post type
 export type BlogPost = {
   id: string;
   title: string;
@@ -15,96 +15,40 @@ export type BlogPost = {
 type BlogStore = {
   blogPosts: BlogPost[];
   setBlogPosts: (blogPosts: BlogPost[]) => void;
-  addBlogPost: (post: Omit<BlogPost, 'id' | 'date'>) => void;
-  updateBlogPost: (id: string, post: Partial<Omit<BlogPost, 'id' | 'date'>>) => void;
-  deleteBlogPost: (id: string) => void;
+  fetchBlogPosts: () => Promise<void>;
 };
-
-// Get initial data from localStorage or use default
-const getInitialBlogPosts = () => {
-  const saved = localStorage.getItem('blogPosts');
-  return saved ? JSON.parse(saved) : initialBlogPosts;
-};
-
-// Initial blog posts that match what's in AdminBlog.tsx
-const initialBlogPosts: BlogPost[] = [
-  {
-    id: "1",
-    title: "Building Scalable Data Pipelines in the Cloud",
-    excerpt: "Learn how to design and implement data pipelines that can handle massive volumes of data without breaking a sweat.",
-    content: "This is the full content of the blog post, which would be much longer in a real application. It would include paragraphs, headings, code samples, and possibly images.",
-    date: "May 15, 2023",
-    readTime: "8 min read",
-    category: "Cloud Infrastructure"
-  },
-  {
-    id: "2",
-    title: "Data Governance Best Practices for Enterprise",
-    excerpt: "Explore the essential strategies to maintain data quality and compliance in large organizations.",
-    content: "This is the full content of the blog post about data governance. It would include detailed explanations of governance frameworks, compliance requirements, and implementation strategies.",
-    date: "June 22, 2023",
-    readTime: "6 min read",
-    category: "Best Practices"
-  },
-  {
-    id: "3",
-    title: "The Future of Data Engineering with AI",
-    excerpt: "How artificial intelligence is transforming the field of data engineering and what it means for your career.",
-    content: "Detailed discussion of AI's impact on data engineering practices, tools, and job roles. Would include case studies and future predictions.",
-    date: "July 10, 2023",
-    readTime: "10 min read",
-    category: "Artificial Intelligence"
-  },
-  {
-    id: "4",
-    title: "Optimizing Snowflake for Cost Efficiency",
-    excerpt: "Practical tips to reduce your Snowflake costs while maintaining performance.",
-    content: "In-depth analysis of Snowflake pricing models and specific strategies to optimize queries, storage, and compute resources.",
-    date: "August 5, 2023",
-    readTime: "7 min read",
-    category: "Cloud Infrastructure"
-  }
-];
 
 export const useBlogStore = create<BlogStore>((set) => ({
-  blogPosts: getInitialBlogPosts(),
+  blogPosts: [],
   
-  setBlogPosts: (blogPosts) => {
-    localStorage.setItem('blogPosts', JSON.stringify(blogPosts));
+  setBlogPosts: (blogPosts) => set({ blogPosts }),
+  
+  fetchBlogPosts: async () => {
+    const { data, error } = await supabase
+      .from('article')
+      .select('*, category_article!article_category_fkey(category)')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching blog posts:', error);
+      return;
+    }
+
+    // Transform the data to match our BlogPost type
+    const blogPosts = data.map(post => ({
+      id: post.id.toString(),
+      title: post.title || '',
+      excerpt: post.excerpt || '',
+      content: post.content || '',
+      date: new Date(post.created_at).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }),
+      readTime: post.read_time || '5 min read',
+      category: post.category_article?.category || 'Uncategorized',
+    }));
+
     set({ blogPosts });
   },
-  
-  addBlogPost: (post) => set((state) => {
-    const currentDate = new Date().toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-    
-    const newPosts = [
-      ...state.blogPosts,
-      {
-        id: Date.now().toString(),
-        date: currentDate,
-        ...post
-      }
-    ];
-    
-    localStorage.setItem('blogPosts', JSON.stringify(newPosts));
-    return { blogPosts: newPosts };
-  }),
-  
-  updateBlogPost: (id, post) => set((state) => {
-    const newPosts = state.blogPosts.map((p) => 
-      p.id === id ? { ...p, ...post } : p
-    );
-    localStorage.setItem('blogPosts', JSON.stringify(newPosts));
-    return { blogPosts: newPosts };
-  }),
-  
-  deleteBlogPost: (id) => set((state) => {
-    const newPosts = state.blogPosts.filter((p) => p.id !== id);
-    localStorage.setItem('blogPosts', JSON.stringify(newPosts));
-    return { blogPosts: newPosts };
-  })
 }));
