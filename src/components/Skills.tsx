@@ -1,21 +1,15 @@
 
 import { m } from "framer-motion";
 import { useSkillsStore } from "@/stores/skillsStore";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { useEffect } from "react";
 
 export const Skills = () => {
-  // Use the skills store to get the same data as AdminSkills
-  const { skillCategories } = useSkillsStore();
-  const [openCategories, setOpenCategories] = useState<Record<string, boolean>>({});
-
-  const toggleCategory = (categoryId: string) => {
-    setOpenCategories(prev => ({
-      ...prev,
-      [categoryId]: !prev[categoryId]
-    }));
-  };
+  const { skillCategories, fetchSkillCategories } = useSkillsStore();
+  
+  // Fetch skills data when component mounts
+  useEffect(() => {
+    fetchSkillCategories();
+  }, [fetchSkillCategories]);
 
   return (
     <section id="skills" className="bg-secondary section-padding">

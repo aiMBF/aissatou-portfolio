@@ -1,4 +1,3 @@
-
 import { create } from 'zustand';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
@@ -29,24 +28,47 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
   setSkillCategories: (skillCategories) => set({ skillCategories }),
   
   fetchSkillCategories: async () => {
-    const { data, error } = await supabase
-      .from('category_skill')
-      .select('*')
-      .order('created_at', { ascending: true });
+    try {
+      // First, fetch all categories
+      const { data: categoriesData, error: categoriesError } = await supabase
+        .from('category_skill')
+        .select('*')
+        .order('created_at', { ascending: true });
 
-    if (error) {
-      console.error('Error fetching skill categories:', error);
-      return;
+      if (categoriesError) {
+        console.error('Error fetching skill categories:', categoriesError);
+        return;
+      }
+
+      // Next, fetch all skills
+      const { data: skillsData, error: skillsError } = await supabase
+        .from('skill')
+        .select('*');
+
+      if (skillsError) {
+        console.error('Error fetching skills:', skillsError);
+        return;
+      }
+
+      // Transform and combine the data
+      const skillCategories = categoriesData.map(category => {
+        // Find skills for this category
+        const categorySkills = skillsData
+          .filter(skill => skill.category === category.id)
+          .map(skill => skill.skill_name)
+          .filter(Boolean); // Filter out null/undefined
+
+        return {
+          id: category.id.toString(),
+          category: category.category_name || '',
+          skills: categorySkills,
+        };
+      });
+
+      set({ skillCategories });
+    } catch (error) {
+      console.error('Error in fetchSkillCategories:', error);
     }
-
-    // Transform the data to match our SkillCategory type
-    const skillCategories = data.map(category => ({
-      id: category.id.toString(),
-      category: category.category_name || '',
-      skills: category.skills || [],
-    }));
-
-    set({ skillCategories });
   },
   
   addSkillCategory: async (categoryName) => {
@@ -175,86 +197,98 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
   },
   
   updateSkill: async (categoryId, oldSkillName, newSkillName) => {
-    const category = get().skillCategories.find(cat => cat.id === categoryId);
-    
-    if (!category) {
-      toast({
-        title: "Error",
-        description: "Category not found",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    const updatedSkills = category.skills.map(skill => 
-      skill === oldSkillName ? newSkillName : skill
-    );
-    
-    // Convert string id to number for the database operation
-    const numericId = parseInt(categoryId, 10);
-    
-    // Update the skills in the database
-    const { error } = await supabase
-      .from('category_skill')
-      .update({ skills: updatedSkills })
-      .eq('id', numericId);
+    try {
+      // First find the skill ID
+      const { data: skillData, error: findError } = await supabase
+        .from('skill')
+        .select('id')
+        .eq('category', parseInt(categoryId, 10))
+        .eq('skill_name', oldSkillName)
+        .single();
+      
+      if (findError) {
+        console.error('Error finding skill:', findError);
+        toast({
+          title: "Error",
+          description: `Failed to find skill: ${findError.message}`,
+          variant: "destructive",
+        });
+        return;
+      }
 
-    if (error) {
-      console.error('Error updating skill:', error);
-      toast({
-        title: "Error",
-        description: `Failed to update skill: ${error.message}`,
-        variant: "destructive",
-      });
-      return;
-    }
+      // Update the skill
+      const { error: updateError } = await supabase
+        .from('skill')
+        .update({ skill_name: newSkillName })
+        .eq('id', skillData.id);
 
-    // Update the skills in the state
-    set(state => ({
-      skillCategories: state.skillCategories.map(cat => 
-        cat.id === categoryId ? { ...cat, skills: updatedSkills } : cat
-      )
-    }));
+      if (updateError) {
+        console.error('Error updating skill:', updateError);
+        toast({
+          title: "Error",
+          description: `Failed to update skill: ${updateError.message}`,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // After updating, fetch all skills again
+      await get().fetchSkillCategories();
+      
+      toast({
+        title: "Success",
+        description: `Skill updated from "${oldSkillName}" to "${newSkillName}"`,
+      });
+    } catch (error) {
+      console.error('Error in updateSkill:', error);
+    }
   },
   
   deleteSkill: async (categoryId, skillName) => {
-    const category = get().skillCategories.find(cat => cat.id === categoryId);
-    
-    if (!category) {
-      toast({
-        title: "Error",
-        description: "Category not found",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    const updatedSkills = category.skills.filter(skill => skill !== skillName);
-    
-    // Convert string id to number for the database operation
-    const numericId = parseInt(categoryId, 10);
-    
-    // Update the skills in the database
-    const { error } = await supabase
-      .from('category_skill')
-      .update({ skills: updatedSkills })
-      .eq('id', numericId);
+    try {
+      // First find the skill ID
+      const { data: skillData, error: findError } = await supabase
+        .from('skill')
+        .select('id')
+        .eq('category', parseInt(categoryId, 10))
+        .eq('skill_name', skillName)
+        .single();
+      
+      if (findError) {
+        console.error('Error finding skill:', findError);
+        toast({
+          title: "Error",
+          description: `Failed to find skill: ${findError.message}`,
+          variant: "destructive",
+        });
+        return;
+      }
 
-    if (error) {
-      console.error('Error deleting skill:', error);
-      toast({
-        title: "Error",
-        description: `Failed to delete skill: ${error.message}`,
-        variant: "destructive",
-      });
-      return;
-    }
+      // Delete the skill
+      const { error: deleteError } = await supabase
+        .from('skill')
+        .delete()
+        .eq('id', skillData.id);
 
-    // Update the skills in the state
-    set(state => ({
-      skillCategories: state.skillCategories.map(cat => 
-        cat.id === categoryId ? { ...cat, skills: updatedSkills } : cat
-      )
-    }));
+      if (deleteError) {
+        console.error('Error deleting skill:', deleteError);
+        toast({
+          title: "Error",
+          description: `Failed to delete skill: ${deleteError.message}`,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // After deleting, fetch all skills again
+      await get().fetchSkillCategories();
+      
+      toast({
+        title: "Success",
+        description: `Skill "${skillName}" deleted successfully`,
+      });
+    } catch (error) {
+      console.error('Error in deleteSkill:', error);
+    }
   },
 }));
