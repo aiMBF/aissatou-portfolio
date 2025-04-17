@@ -57,13 +57,13 @@ export const useProjectsStore = create<ProjectsStore>((set) => ({
     // Insert a new project
     const { data, error } = await supabase
       .from('project')
-      .insert([{
+      .insert({
         title: project.title,
         description: project.description,
         image_cover: project.image,
         link: project.link,
         github_url: project.github,
-      }])
+      })
       .select()
       .single();
 
@@ -101,11 +101,14 @@ export const useProjectsStore = create<ProjectsStore>((set) => ({
     if (project.link !== undefined) updateData.link = project.link;
     if (project.github !== undefined) updateData.github_url = project.github;
 
+    // Convert string id to number for the database operation
+    const numericId = parseInt(id, 10);
+
     // Update the project
     const { error } = await supabase
       .from('project')
       .update(updateData)
-      .eq('id', id);
+      .eq('id', numericId);
 
     if (error) {
       console.error('Error updating project:', error);
@@ -126,11 +129,14 @@ export const useProjectsStore = create<ProjectsStore>((set) => ({
   },
   
   deleteProject: async (id) => {
+    // Convert string id to number for the database operation
+    const numericId = parseInt(id, 10);
+    
     // Delete the project
     const { error } = await supabase
       .from('project')
       .delete()
-      .eq('id', id);
+      .eq('id', numericId);
 
     if (error) {
       console.error('Error deleting project:', error);

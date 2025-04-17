@@ -53,7 +53,7 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
     // Insert a new category
     const { data, error } = await supabase
       .from('category_skill')
-      .insert([{ category_name: categoryName, skills: [] }])
+      .insert({ category_name: categoryName, skills: [] })
       .select()
       .single();
 
@@ -80,11 +80,14 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
   },
   
   updateSkillCategory: async (id, categoryName) => {
+    // Convert string id to number for the database operation
+    const numericId = parseInt(id, 10);
+    
     // Update the category
     const { error } = await supabase
       .from('category_skill')
       .update({ category_name: categoryName })
-      .eq('id', id);
+      .eq('id', numericId);
 
     if (error) {
       console.error('Error updating skill category:', error);
@@ -105,11 +108,14 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
   },
   
   deleteSkillCategory: async (id) => {
+    // Convert string id to number for the database operation
+    const numericId = parseInt(id, 10);
+    
     // Delete the category
     const { error } = await supabase
       .from('category_skill')
       .delete()
-      .eq('id', id);
+      .eq('id', numericId);
 
     if (error) {
       console.error('Error deleting skill category:', error);
@@ -141,11 +147,14 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
     
     const updatedSkills = [...category.skills, skillName];
     
+    // Convert string id to number for the database operation
+    const numericId = parseInt(categoryId, 10);
+    
     // Update the skills in the database
     const { error } = await supabase
       .from('category_skill')
       .update({ skills: updatedSkills })
-      .eq('id', categoryId);
+      .eq('id', numericId);
 
     if (error) {
       console.error('Error adding skill:', error);
@@ -181,11 +190,14 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
       skill === oldSkillName ? newSkillName : skill
     );
     
+    // Convert string id to number for the database operation
+    const numericId = parseInt(categoryId, 10);
+    
     // Update the skills in the database
     const { error } = await supabase
       .from('category_skill')
       .update({ skills: updatedSkills })
-      .eq('id', categoryId);
+      .eq('id', numericId);
 
     if (error) {
       console.error('Error updating skill:', error);
@@ -219,11 +231,14 @@ export const useSkillsStore = create<SkillsStore>((set, get) => ({
     
     const updatedSkills = category.skills.filter(skill => skill !== skillName);
     
+    // Convert string id to number for the database operation
+    const numericId = parseInt(categoryId, 10);
+    
     // Update the skills in the database
     const { error } = await supabase
       .from('category_skill')
       .update({ skills: updatedSkills })
-      .eq('id', categoryId);
+      .eq('id', numericId);
 
     if (error) {
       console.error('Error deleting skill:', error);
