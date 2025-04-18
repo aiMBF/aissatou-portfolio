@@ -33,7 +33,7 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
 
       const skillCategories = categoriesData.map(category => {
         const categorySkills = skillsData
-          .filter(skill => skill.category === category.id)
+          .filter(skill => skill.category === category.category_name) // Fix: compare string with string
           .map(skill => skill.skill_name)
           .filter(Boolean);
 
@@ -53,7 +53,7 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
   addSkillCategory: async (categoryName) => {
     const { data, error } = await supabase
       .from('category_skill')
-      .insert({ category_name: categoryName, skills: [] })
+      .insert({ category_name: categoryName })
       .select()
       .single();
 
@@ -70,7 +70,7 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
     const newCategory = {
       id: data.id.toString(),
       category: data.category_name || '',
-      skills: data.skills || [],
+      skills: [], // Create empty skills array for new category
     };
 
     set(state => ({
@@ -138,14 +138,30 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
       return;
     }
     
-    const updatedSkills = [...category.skills, skillName];
-    
-    const numericId = parseInt(categoryId, 10);
-    
-    const { error } = await supabase
+    // Get category_name to use as reference
+    const { data: categoryData, error: categoryError } = await supabase
       .from('category_skill')
-      .update({ skills: updatedSkills })
-      .eq('id', numericId);
+      .select('category_name')
+      .eq('id', parseInt(categoryId, 10))
+      .single();
+      
+    if (categoryError) {
+      console.error('Error finding category:', categoryError);
+      toast({
+        title: "Error",
+        description: `Failed to find category: ${categoryError.message}`,
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Insert the new skill using the category_name
+    const { error } = await supabase
+      .from('skill')
+      .insert({ 
+        category: categoryData.category_name,
+        skill_name: skillName
+      });
 
     if (error) {
       console.error('Error adding skill:', error);
@@ -157,19 +173,39 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
       return;
     }
 
+    // Update local state
     set(state => ({
       skillCategories: state.skillCategories.map(cat => 
-        cat.id === categoryId ? { ...cat, skills: updatedSkills } : cat
+        cat.id === categoryId 
+          ? { ...cat, skills: [...cat.skills, skillName] } 
+          : cat
       )
     }));
   },
   
   updateSkill: async (categoryId, oldSkillName, newSkillName) => {
     try {
+      // Get category_name to use as reference
+      const { data: categoryData, error: categoryError } = await supabase
+        .from('category_skill')
+        .select('category_name')
+        .eq('id', parseInt(categoryId, 10))
+        .single();
+        
+      if (categoryError) {
+        console.error('Error finding category:', categoryError);
+        toast({
+          title: "Error",
+          description: `Failed to find category: ${categoryError.message}`,
+          variant: "destructive",
+        });
+        return;
+      }
+      
       const { data: skillData, error: findError } = await supabase
         .from('skill')
         .select('id')
-        .eq('category', parseInt(categoryId, 10))
+        .eq('category', categoryData.category_name)
         .eq('skill_name', oldSkillName)
         .single();
       
@@ -211,10 +247,27 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
   
   deleteSkill: async (categoryId, skillName) => {
     try {
+      // Get category_name to use as reference
+      const { data: categoryData, error: categoryError } = await supabase
+        .from('category_skill')
+        .select('category_name')
+        .eq('id', parseInt(categoryId, 10))
+        .single();
+        
+      if (categoryError) {
+        console.error('Error finding category:', categoryError);
+        toast({
+          title: "Error",
+          description: `Failed to find category: ${categoryError.message}`,
+          variant: "destructive",
+        });
+        return;
+      }
+      
       const { data: skillData, error: findError } = await supabase
         .from('skill')
         .select('id')
-        .eq('category', parseInt(categoryId, 10))
+        .eq('category', categoryData.category_name)
         .eq('skill_name', skillName)
         .single();
       
