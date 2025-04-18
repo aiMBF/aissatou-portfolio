@@ -7,7 +7,7 @@ import { Projects } from "@/components/Projects";
 import { Skills } from "@/components/Skills";
 import { Blog } from "@/components/Blog";
 import { useProjectsStore } from "@/stores/projectsStore";
-import { useSkillsStore } from "@/stores/skillsStore";
+import { useSkillsStore } from "@/stores/skills/skillsStore";
 import { useBlogStore } from "@/stores/blogStore";
 
 const Index = () => {

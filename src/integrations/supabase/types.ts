@@ -11,7 +11,7 @@ export type Database = {
     Tables: {
       article: {
         Row: {
-          category: number | null
+          category: string | null
           content: string | null
           created_at: string
           excerpt: string | null
@@ -21,7 +21,7 @@ export type Database = {
           title: string | null
         }
         Insert: {
-          category?: number | null
+          category?: string | null
           content?: string | null
           created_at?: string
           excerpt?: string | null
@@ -31,7 +31,7 @@ export type Database = {
           title?: string | null
         }
         Update: {
-          category?: number | null
+          category?: string | null
           content?: string | null
           created_at?: string
           excerpt?: string | null
@@ -46,7 +46,7 @@ export type Database = {
             columns: ["category"]
             isOneToOne: false
             referencedRelation: "category_article"
-            referencedColumns: ["id"]
+            referencedColumns: ["category"]
           },
         ]
       }
@@ -67,22 +67,19 @@ export type Database = {
       }
       category_skill: {
         Row: {
-          category_name: string | null
+          category_name: string
           created_at: string
           id: number
-          skills: string[] | null
         }
         Insert: {
-          category_name?: string | null
+          category_name: string
           created_at?: string
           id?: number
-          skills?: string[] | null
         }
         Update: {
-          category_name?: string | null
+          category_name?: string
           created_at?: string
           id?: number
-          skills?: string[] | null
         }
         Relationships: []
       }
@@ -118,30 +115,30 @@ export type Database = {
       }
       skill: {
         Row: {
-          category: number | null
+          category: string
           created_at: string
           id: number
           skill_name: string | null
         }
         Insert: {
-          category?: number | null
+          category: string
           created_at?: string
           id?: number
           skill_name?: string | null
         }
         Update: {
-          category?: number | null
+          category?: string
           created_at?: string
           id?: number
           skill_name?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "skills_category_fkey"
+            foreignKeyName: "skill_category_fkey"
             columns: ["category"]
             isOneToOne: false
             referencedRelation: "category_skill"
-            referencedColumns: ["id"]
+            referencedColumns: ["category_name"]
           },
         ]
       }
