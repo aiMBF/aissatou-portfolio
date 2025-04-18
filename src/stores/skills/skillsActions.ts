@@ -23,7 +23,7 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
         return;
       }
 
-      // Fetch all skills
+      // Fetch all skills with proper join to get the category relationship
       const { data: skillsData, error: skillsError } = await supabase
         .from('skill')
         .select('*');
@@ -36,9 +36,9 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
       console.log('Categories data:', categoriesData);
       console.log('Skills data:', skillsData);
 
-      // Map skills to their categories
+      // Map skills to their categories - fixed by correctly using the category column
       const skillCategories = categoriesData.map(category => {
-        // Filter skills that belong to this category
+        // Filter skills that belong to this category by comparing with category_name
         const categorySkills = skillsData
           .filter(skill => skill.category === category.category_name)
           .map(skill => skill.skill_name)

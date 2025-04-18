@@ -43,7 +43,7 @@ export const Skills = () => {
                   {category.skills && category.skills.length > 0 ? (
                     category.skills.map((skill, index) => (
                       <m.div
-                        key={`${category.id}-${skill}`}
+                        key={`${category.id}-${index}-${skill}`}
                         initial={{ opacity: 0, x: -10 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.3, delay: (catIndex * 0.1) + (index * 0.05) }}
