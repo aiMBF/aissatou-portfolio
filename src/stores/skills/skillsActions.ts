@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { SkillCategory } from '@/types/skills';
@@ -20,29 +19,42 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
 
       if (categoriesError) {
         console.error('Error fetching skill categories:', categoriesError);
+        toast({
+          title: "Error",
+          description: `Failed to fetch skill categories: ${categoriesError.message}`,
+          variant: "destructive",
+        });
         return;
       }
 
-      // Fetch all skills with proper join to get the category relationship
+      // Fetch all skills (ensures we get the latest data)
       const { data: skillsData, error: skillsError } = await supabase
         .from('skill')
-        .select('*');
+        .select('*')
+        .order('created_at', { ascending: true });
 
       if (skillsError) {
         console.error('Error fetching skills:', skillsError);
+        toast({
+          title: "Error",
+          description: `Failed to fetch skills: ${skillsError.message}`,
+          variant: "destructive",
+        });
         return;
       }
 
       console.log('Categories data:', categoriesData);
       console.log('Skills data:', skillsData);
 
-      // Map skills to their categories - fixed by correctly using the category column
+      // Map skills to their categories
       const skillCategories = categoriesData.map(category => {
-        // Filter skills that belong to this category by comparing with category_name
+        // Filter skills that belong to this category by matching the category column
         const categorySkills = skillsData
           .filter(skill => skill.category === category.category_name)
           .map(skill => skill.skill_name)
           .filter(Boolean); // Remove any null or undefined values
+
+        console.log(`Skills for category ${category.category_name}:`, categorySkills);
 
         return {
           id: category.id.toString(),
@@ -55,6 +67,11 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
       set({ skillCategories });
     } catch (error) {
       console.error('Error in fetchSkillCategories:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch skill categories",
+        variant: "destructive",
+      });
     }
   },
   
