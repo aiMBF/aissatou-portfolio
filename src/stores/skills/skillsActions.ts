@@ -12,6 +12,7 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
   
   fetchSkillCategories: async () => {
     try {
+      // Fetch all categories
       const { data: categoriesData, error: categoriesError } = await supabase
         .from('category_skill')
         .select('*')
@@ -22,6 +23,7 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
         return;
       }
 
+      // Fetch all skills
       const { data: skillsData, error: skillsError } = await supabase
         .from('skill')
         .select('*');
@@ -31,11 +33,16 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
         return;
       }
 
+      console.log('Categories data:', categoriesData);
+      console.log('Skills data:', skillsData);
+
+      // Map skills to their categories
       const skillCategories = categoriesData.map(category => {
+        // Filter skills that belong to this category
         const categorySkills = skillsData
           .filter(skill => skill.category === category.category_name)
           .map(skill => skill.skill_name)
-          .filter(Boolean);
+          .filter(Boolean); // Remove any null or undefined values
 
         return {
           id: category.id.toString(),
@@ -44,6 +51,7 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
         };
       });
 
+      console.log('Processed skill categories:', skillCategories);
       set({ skillCategories });
     } catch (error) {
       console.error('Error in fetchSkillCategories:', error);
@@ -127,55 +135,73 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
   },
   
   addSkill: async (categoryId: string, skillName: string) => {
-    const category = get().skillCategories.find(cat => cat.id === categoryId);
-    
-    if (!category) {
+    try {
+      const category = get().skillCategories.find(cat => cat.id === categoryId);
+      
+      if (!category) {
+        toast({
+          title: "Error",
+          description: "Category not found",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Get the category name from the ID
+      const { data: categoryData, error: categoryError } = await supabase
+        .from('category_skill')
+        .select('category_name')
+        .eq('id', parseInt(categoryId, 10))
+        .single();
+      
+      if (categoryError) {
+        console.error('Error finding category:', categoryError);
+        toast({
+          title: "Error",
+          description: `Failed to find category: ${categoryError.message}`,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Insert the new skill
+      const { error } = await supabase
+        .from('skill')
+        .insert({ 
+          category: categoryData.category_name,
+          skill_name: skillName 
+        });
+
+      if (error) {
+        console.error('Error adding skill:', error);
+        toast({
+          title: "Error",
+          description: `Failed to add skill: ${error.message}`,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Refresh skill categories
+      await get().fetchSkillCategories();
+      
+      toast({
+        title: "Success",
+        description: `Skill "${skillName}" added successfully`,
+      });
+    } catch (error) {
+      console.error('Error in addSkill:', error);
       toast({
         title: "Error",
-        description: "Category not found",
+        description: "Failed to add skill",
         variant: "destructive",
       });
-      return;
     }
-
-    const { data: categoryData, error: categoryError } = await supabase
-      .from('category_skill')
-      .select('category_name')
-      .eq('id', parseInt(categoryId, 10))
-      .single();
-    
-    if (categoryError) {
-      console.error('Error finding category:', categoryError);
-      toast({
-        title: "Error",
-        description: `Failed to find category: ${categoryError.message}`,
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const { error } = await supabase
-      .from('skill')
-      .insert({ 
-        category: categoryData.category_name,
-        skill_name: skillName 
-      });
-
-    if (error) {
-      console.error('Error adding skill:', error);
-      toast({
-        title: "Error",
-        description: `Failed to add skill: ${error.message}`,
-        variant: "destructive",
-      });
-      return;
-    }
-
-    await get().fetchSkillCategories();
   },
   
   updateSkill: async (categoryId: string, oldSkillName: string, newSkillName: string) => {
     try {
+      // Get the category name from the ID
       const { data: categoryData, error: categoryError } = await supabase
         .from('category_skill')
         .select('category_name')
@@ -184,6 +210,7 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
       
       if (categoryError) throw categoryError;
 
+      // Find the skill by category and old name
       const { data: skillData, error: findError } = await supabase
         .from('skill')
         .select('id')
@@ -193,6 +220,7 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
       
       if (findError) throw findError;
 
+      // Update the skill name
       const { error: updateError } = await supabase
         .from('skill')
         .update({ skill_name: newSkillName })
@@ -200,6 +228,7 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
 
       if (updateError) throw updateError;
 
+      // Refresh skill categories
       await get().fetchSkillCategories();
       
       toast({
@@ -218,6 +247,7 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
   
   deleteSkill: async (categoryId: string, skillName: string) => {
     try {
+      // Get the category name from the ID
       const { data: categoryData, error: categoryError } = await supabase
         .from('category_skill')
         .select('category_name')
@@ -226,6 +256,7 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
       
       if (categoryError) throw categoryError;
 
+      // Find the skill by category and name
       const { data: skillData, error: findError } = await supabase
         .from('skill')
         .select('id')
@@ -235,6 +266,7 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
       
       if (findError) throw findError;
 
+      // Delete the skill
       const { error: deleteError } = await supabase
         .from('skill')
         .delete()
@@ -242,6 +274,7 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
 
       if (deleteError) throw deleteError;
 
+      // Refresh skill categories
       await get().fetchSkillCategories();
       
       toast({
