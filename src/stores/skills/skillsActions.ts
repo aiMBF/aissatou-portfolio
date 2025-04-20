@@ -111,10 +111,13 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
   // Update a skill category
   updateSkillCategory: async (id, categoryName) => {
     try {
+      // Convert string id to number for Supabase query
+      const numericId = parseInt(id, 10);
+      
       const { error } = await supabase
         .from('category_skill')
         .update({ category_name: categoryName })
-        .eq('id', id);
+        .eq('id', numericId);
 
       if (error) {
         console.error('Error updating category:', error);
@@ -130,7 +133,7 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
       const { data: oldCategory } = await supabase
         .from('category_skill')
         .select('category_name')
-        .eq('id', id)
+        .eq('id', numericId)
         .single();
 
       if (oldCategory) {
@@ -168,11 +171,14 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
   // Delete a skill category
   deleteSkillCategory: async (id) => {
     try {
+      // Convert string id to number for Supabase query
+      const numericId = parseInt(id, 10);
+      
       // Get category name before deletion to also delete associated skills
       const { data: categoryData } = await supabase
         .from('category_skill')
         .select('category_name')
-        .eq('id', id)
+        .eq('id', numericId)
         .single();
 
       if (categoryData) {
@@ -187,7 +193,7 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
       const { error } = await supabase
         .from('category_skill')
         .delete()
-        .eq('id', id);
+        .eq('id', numericId);
 
       if (error) {
         console.error('Error deleting category:', error);
@@ -221,11 +227,14 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
   // Add a skill to a category
   addSkill: async (categoryId, skillName) => {
     try {
+      // Convert string id to number for Supabase query
+      const numericId = parseInt(categoryId, 10);
+      
       // Get category name from ID
       const { data: categoryData } = await supabase
         .from('category_skill')
         .select('category_name')
-        .eq('id', categoryId)
+        .eq('id', numericId)
         .single();
 
       if (!categoryData) {
@@ -285,11 +294,14 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
   // Update a skill
   updateSkill: async (categoryId, oldSkillName, newSkillName) => {
     try {
+      // Convert string id to number for Supabase query
+      const numericId = parseInt(categoryId, 10);
+      
       // Get category name from ID
       const { data: categoryData } = await supabase
         .from('category_skill')
         .select('category_name')
-        .eq('id', categoryId)
+        .eq('id', numericId)
         .single();
 
       if (!categoryData) {
@@ -351,11 +363,14 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
   // Delete a skill
   deleteSkill: async (categoryId, skillName) => {
     try {
+      // Convert string id to number for Supabase query
+      const numericId = parseInt(categoryId, 10);
+      
       // Get category name from ID
       const { data: categoryData } = await supabase
         .from('category_skill')
         .select('category_name')
-        .eq('id', categoryId)
+        .eq('id', numericId)
         .single();
 
       if (!categoryData) {
