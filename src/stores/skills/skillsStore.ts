@@ -1,8 +1,2 @@
 
-import { create } from 'zustand';
-import { createSkillsActions } from './skillsActions';
-import { SkillsStore } from '@/types/skills';
-
-export const useSkillsStore = create<SkillsStore>((...args) => ({
-  ...createSkillsActions(...args),
-}));
+// This file can be deleted since we're no longer using Zustand for skills management

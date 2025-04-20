@@ -1,61 +1,67 @@
 
-import { m } from "framer-motion";
-import { useSkillsStore } from "@/stores/skills/skillsStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+
+type Skill = {
+  id: number;
+  skill_name: string;
+  category: string;
+};
 
 export const Skills = () => {
-  const { skillCategories, fetchSkillCategories } = useSkillsStore();
-  
+  const [skills, setSkills] = useState<Skill[]>([]);
+
   useEffect(() => {
-    fetchSkillCategories();
-  }, [fetchSkillCategories]);
+    const fetchSkills = async () => {
+      const { data, error } = await supabase
+        .from('skill')
+        .select('*')
+        .order('category', { ascending: true });
+
+      if (error) {
+        console.error('Error fetching skills:', error);
+        return;
+      }
+
+      setSkills(data || []);
+    };
+
+    fetchSkills();
+  }, []);
 
   return (
     <section id="skills" className="bg-secondary section-padding">
       <div className="max-w-5xl mx-auto">
-        <m.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           <span className="text-sm uppercase tracking-wider text-muted-foreground">Expertise</span>
           <h2 className="text-3xl md:text-4xl font-bold mt-2">Technical Skills</h2>
-        </m.div>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {skillCategories.map((category, categoryIndex) => (
-            <m.div
-              key={category.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
-              viewport={{ once: true }}
-              className="bg-background/50 backdrop-blur-sm rounded-lg p-6 shadow-lg"
-            >
-              <h3 className="text-xl font-semibold mb-4 text-primary">{category.category}</h3>
-              <div className="grid grid-cols-2 gap-3">
-                {category.skills && category.skills.length > 0 ? (
-                  category.skills.map((skill, skillIndex) => (
-                    <m.div
-                      key={`${category.id}-${skillIndex}`}
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.3, delay: (categoryIndex * 0.1) + (skillIndex * 0.05) }}
-                      viewport={{ once: true }}
-                      className="bg-secondary rounded p-3 text-center hover:bg-primary/10 transition-colors"
-                    >
-                      <span className="font-medium">{skill}</span>
-                    </m.div>
-                  ))
-                ) : (
-                  <div className="col-span-2 text-center text-muted-foreground">
-                    No skills added yet
-                  </div>
-                )}
-              </div>
-            </m.div>
+        <div className="space-y-6">
+          {Object.entries(
+            skills.reduce((acc, skill) => {
+              if (!acc[skill.category]) {
+                acc[skill.category] = [];
+              }
+              if (skill.skill_name) {
+                acc[skill.category].push(skill.skill_name);
+              }
+              return acc;
+            }, {} as Record<string, string[]>)
+          ).map(([category, skillNames]) => (
+            <div key={category} className="bg-background/50 backdrop-blur-sm rounded-lg p-6 shadow-lg">
+              <h3 className="text-xl font-semibold mb-4 text-primary">{category}</h3>
+              <ul className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {skillNames.map((skillName) => (
+                  <li 
+                    key={skillName}
+                    className="bg-secondary rounded p-3 text-center hover:bg-primary/10 transition-colors"
+                  >
+                    {skillName}
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
         </div>
       </div>
