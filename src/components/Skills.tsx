@@ -11,7 +11,7 @@ export const Skills = () => {
     fetchSkillCategories();
   }, [fetchSkillCategories]);
 
-  console.log('Current skill categories:', skillCategories); // Added for debugging
+  console.log('Current skill categories:', skillCategories); // For debugging
 
   return (
     <section id="skills" className="bg-secondary section-padding">

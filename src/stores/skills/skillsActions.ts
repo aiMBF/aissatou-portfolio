@@ -12,6 +12,7 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
   
   fetchSkillCategories: async () => {
     try {
+      console.log('Fetching skill categories...');
       // Fetch all categories
       const { data: categoriesData, error: categoriesError } = await supabase
         .from('category_skill')
@@ -28,10 +29,10 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
         return;
       }
 
-      // Fetch all skills with proper relationship to categories
+      // Specifically fetch skills data from the skill table
       const { data: skillsData, error: skillsError } = await supabase
         .from('skill')
-        .select('*')
+        .select('id, category, skill_name, created_at')
         .order('created_at', { ascending: true });
 
       if (skillsError) {
@@ -47,9 +48,9 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
       console.log('Categories data:', categoriesData);
       console.log('Skills data:', skillsData);
 
-      // Map skills to their categories
+      // Map skills to their categories using the foreign key relationship
       const skillCategories = categoriesData.map(category => {
-        // Filter skills that belong to this category
+        // Filter skills that belong to this category using the foreign key relationship
         const categorySkills = skillsData
           .filter(skill => skill.category === category.category_name)
           .map(skill => skill.skill_name)
