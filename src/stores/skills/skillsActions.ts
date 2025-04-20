@@ -1,310 +1,67 @@
+
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { SkillCategory } from '@/types/skills';
 import { StateCreator } from 'zustand';
 import { SkillsStore } from '@/types/skills';
 
-export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore> = (set, get) => ({
+export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore> = (set) => ({
   skillCategories: [],
   
   setSkillCategories: (skillCategories) => set({ skillCategories }),
   
   fetchSkillCategories: async () => {
     try {
-      console.log('Fetching skill categories...');
-      // Fetch all categories
-      const { data: categoriesData, error: categoriesError } = await supabase
+      // Fetch all categories first
+      const { data: categories, error: categoriesError } = await supabase
         .from('category_skill')
         .select('*')
         .order('created_at', { ascending: true });
 
       if (categoriesError) {
-        console.error('Error fetching skill categories:', categoriesError);
+        console.error('Error fetching categories:', categoriesError);
         toast({
           title: "Error",
-          description: `Failed to fetch skill categories: ${categoriesError.message}`,
+          description: "Failed to fetch skill categories",
           variant: "destructive",
         });
         return;
       }
 
-      // Fetch skills data
-      const { data: skillsData, error: skillsError } = await supabase
+      // Fetch all skills
+      const { data: skills, error: skillsError } = await supabase
         .from('skill')
-        .select('skill_name, category')
+        .select('*')
         .order('created_at', { ascending: true });
 
       if (skillsError) {
         console.error('Error fetching skills:', skillsError);
         toast({
           title: "Error",
-          description: `Failed to fetch skills: ${skillsError.message}`,
+          description: "Failed to fetch skills",
           variant: "destructive",
         });
         return;
       }
 
-      console.log('Raw categories data:', categoriesData);
-      console.log('Raw skills data:', skillsData);
-
-      // Map categories with their skills
-      const skillCategories = categoriesData.map(category => {
-        const categorySkills = skillsData
-          ?.filter(skill => skill.category === category.category_name)
+      // Group skills by category
+      const skillCategories = categories.map(category => ({
+        id: category.id.toString(),
+        category: category.category_name,
+        skills: skills
+          .filter(skill => skill.category === category.category_name)
           .map(skill => skill.skill_name)
-          .filter(Boolean); // Remove any null values
+          .filter(Boolean)
+      }));
 
-        console.log(`Skills for category ${category.category_name}:`, categorySkills);
-
-        return {
-          id: category.id.toString(),
-          category: category.category_name,
-          skills: categorySkills || [],
-        };
-      });
-
-      console.log('Final processed skill categories:', skillCategories);
       set({ skillCategories });
     } catch (error) {
       console.error('Error in fetchSkillCategories:', error);
       toast({
         title: "Error",
-        description: "Failed to fetch skill categories",
+        description: "Failed to fetch skills data",
         variant: "destructive",
       });
     }
-  },
-  
-  addSkillCategory: async (categoryName: string) => {
-    const { data, error } = await supabase
-      .from('category_skill')
-      .insert({ category_name: categoryName })
-      .select()
-      .single();
-
-    if (error) {
-      console.error('Error adding skill category:', error);
-      toast({
-        title: "Error",
-        description: `Failed to add category: ${error.message}`,
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const newCategory: SkillCategory = {
-      id: data.id.toString(),
-      category: data.category_name,
-      skills: [],
-    };
-
-    set(state => ({
-      skillCategories: [...state.skillCategories, newCategory]
-    }));
-  },
-  
-  updateSkillCategory: async (id: string, categoryName: string) => {
-    const numericId = parseInt(id, 10);
-    
-    const { error } = await supabase
-      .from('category_skill')
-      .update({ category_name: categoryName })
-      .eq('id', numericId);
-
-    if (error) {
-      console.error('Error updating skill category:', error);
-      toast({
-        title: "Error",
-        description: `Failed to update category: ${error.message}`,
-        variant: "destructive",
-      });
-      return;
-    }
-
-    set(state => ({
-      skillCategories: state.skillCategories.map(cat => 
-        cat.id === id ? { ...cat, category: categoryName } : cat
-      )
-    }));
-  },
-  
-  deleteSkillCategory: async (id: string) => {
-    const numericId = parseInt(id, 10);
-    
-    const { error } = await supabase
-      .from('category_skill')
-      .delete()
-      .eq('id', numericId);
-
-    if (error) {
-      console.error('Error deleting skill category:', error);
-      toast({
-        title: "Error",
-        description: `Failed to delete category: ${error.message}`,
-        variant: "destructive",
-      });
-      return;
-    }
-
-    set(state => ({
-      skillCategories: state.skillCategories.filter(cat => cat.id !== id)
-    }));
-  },
-  
-  addSkill: async (categoryId: string, skillName: string) => {
-    try {
-      const category = get().skillCategories.find(cat => cat.id === categoryId);
-      
-      if (!category) {
-        toast({
-          title: "Error",
-          description: "Category not found",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Get the category name from the ID
-      const { data: categoryData, error: categoryError } = await supabase
-        .from('category_skill')
-        .select('category_name')
-        .eq('id', parseInt(categoryId, 10))
-        .single();
-      
-      if (categoryError) {
-        console.error('Error finding category:', categoryError);
-        toast({
-          title: "Error",
-          description: `Failed to find category: ${categoryError.message}`,
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Insert the new skill
-      const { error } = await supabase
-        .from('skill')
-        .insert({ 
-          category: categoryData.category_name,
-          skill_name: skillName 
-        });
-
-      if (error) {
-        console.error('Error adding skill:', error);
-        toast({
-          title: "Error",
-          description: `Failed to add skill: ${error.message}`,
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Refresh skill categories
-      await get().fetchSkillCategories();
-      
-      toast({
-        title: "Success",
-        description: `Skill "${skillName}" added successfully`,
-      });
-    } catch (error) {
-      console.error('Error in addSkill:', error);
-      toast({
-        title: "Error",
-        description: "Failed to add skill",
-        variant: "destructive",
-      });
-    }
-  },
-  
-  updateSkill: async (categoryId: string, oldSkillName: string, newSkillName: string) => {
-    try {
-      // Get the category name from the ID
-      const { data: categoryData, error: categoryError } = await supabase
-        .from('category_skill')
-        .select('category_name')
-        .eq('id', parseInt(categoryId, 10))
-        .single();
-      
-      if (categoryError) throw categoryError;
-
-      // Find the skill by category and old name
-      const { data: skillData, error: findError } = await supabase
-        .from('skill')
-        .select('id')
-        .eq('category', categoryData.category_name)
-        .eq('skill_name', oldSkillName)
-        .single();
-      
-      if (findError) throw findError;
-
-      // Update the skill name
-      const { error: updateError } = await supabase
-        .from('skill')
-        .update({ skill_name: newSkillName })
-        .eq('id', skillData.id);
-
-      if (updateError) throw updateError;
-
-      // Refresh skill categories
-      await get().fetchSkillCategories();
-      
-      toast({
-        title: "Success",
-        description: `Skill updated from "${oldSkillName}" to "${newSkillName}"`,
-      });
-    } catch (error) {
-      console.error('Error in updateSkill:', error);
-      toast({
-        title: "Error",
-        description: "Failed to update skill",
-        variant: "destructive",
-      });
-    }
-  },
-  
-  deleteSkill: async (categoryId: string, skillName: string) => {
-    try {
-      // Get the category name from the ID
-      const { data: categoryData, error: categoryError } = await supabase
-        .from('category_skill')
-        .select('category_name')
-        .eq('id', parseInt(categoryId, 10))
-        .single();
-      
-      if (categoryError) throw categoryError;
-
-      // Find the skill by category and name
-      const { data: skillData, error: findError } = await supabase
-        .from('skill')
-        .select('id')
-        .eq('category', categoryData.category_name)
-        .eq('skill_name', skillName)
-        .single();
-      
-      if (findError) throw findError;
-
-      // Delete the skill
-      const { error: deleteError } = await supabase
-        .from('skill')
-        .delete()
-        .eq('id', skillData.id);
-
-      if (deleteError) throw deleteError;
-
-      // Refresh skill categories
-      await get().fetchSkillCategories();
-      
-      toast({
-        title: "Success",
-        description: `Skill "${skillName}" deleted successfully`,
-      });
-    } catch (error) {
-      console.error('Error in deleteSkill:', error);
-      toast({
-        title: "Error",
-        description: "Failed to delete skill",
-        variant: "destructive",
-      });
-    }
-  },
+  }
 });
