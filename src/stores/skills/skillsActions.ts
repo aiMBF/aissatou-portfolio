@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { SkillCategory } from '@/types/skills';
@@ -27,7 +28,7 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
         return;
       }
 
-      // Fetch all skills (ensures we get the latest data)
+      // Fetch all skills with proper relationship to categories
       const { data: skillsData, error: skillsError } = await supabase
         .from('skill')
         .select('*')
@@ -48,7 +49,7 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
 
       // Map skills to their categories
       const skillCategories = categoriesData.map(category => {
-        // Filter skills that belong to this category by matching the category column
+        // Filter skills that belong to this category
         const categorySkills = skillsData
           .filter(skill => skill.category === category.category_name)
           .map(skill => skill.skill_name)
