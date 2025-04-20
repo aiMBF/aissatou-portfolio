@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { SkillCategory } from '@/types/skills';
@@ -29,10 +28,10 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
         return;
       }
 
-      // Specifically fetch skills data from the skill table
+      // Fetch skills data
       const { data: skillsData, error: skillsError } = await supabase
         .from('skill')
-        .select('id, category, skill_name, created_at')
+        .select('skill_name, category')
         .order('created_at', { ascending: true });
 
       if (skillsError) {
@@ -45,27 +44,26 @@ export const createSkillsActions: StateCreator<SkillsStore, [], [], SkillsStore>
         return;
       }
 
-      console.log('Categories data:', categoriesData);
-      console.log('Skills data:', skillsData);
+      console.log('Raw categories data:', categoriesData);
+      console.log('Raw skills data:', skillsData);
 
-      // Map skills to their categories using the foreign key relationship
+      // Map categories with their skills
       const skillCategories = categoriesData.map(category => {
-        // Filter skills that belong to this category using the foreign key relationship
         const categorySkills = skillsData
-          .filter(skill => skill.category === category.category_name)
+          ?.filter(skill => skill.category === category.category_name)
           .map(skill => skill.skill_name)
-          .filter(Boolean); // Remove any null or undefined values
+          .filter(Boolean); // Remove any null values
 
         console.log(`Skills for category ${category.category_name}:`, categorySkills);
 
         return {
           id: category.id.toString(),
           category: category.category_name,
-          skills: categorySkills,
+          skills: categorySkills || [],
         };
       });
 
-      console.log('Processed skill categories:', skillCategories);
+      console.log('Final processed skill categories:', skillCategories);
       set({ skillCategories });
     } catch (error) {
       console.error('Error in fetchSkillCategories:', error);
