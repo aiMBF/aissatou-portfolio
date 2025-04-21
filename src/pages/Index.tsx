@@ -4,7 +4,6 @@ import { Hero } from "@/components/Hero";
 import { About } from "@/components/About";
 import { Contact } from "@/components/Contact";
 import { Projects } from "@/components/Projects";
-import { Skills } from "@/components/Skills";
 import { Blog } from "@/components/Blog";
 import { useProjectsStore } from "@/stores/projectsStore";
 import { useBlogStore } from "@/stores/blogStore";
@@ -23,7 +22,7 @@ const Index = () => {
       <Hero />
       <About />
       <Contact />
-      <Skills />
+      {/* Skills component removed as requested */}
       <Projects />
       <Blog />
     </div>
@@ -31,3 +30,4 @@ const Index = () => {
 };
 
 export default Index;
+
