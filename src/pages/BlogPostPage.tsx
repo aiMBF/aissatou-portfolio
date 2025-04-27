@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react";
@@ -72,7 +71,7 @@ const BlogPostPage = () => {
           <div className="bg-secondary/50 px-4 py-2 rounded-lg inline-block mb-4">
             <span className="text-sm font-medium">{post.category}</span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-6">{post.title}</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">{post.title}</h1>
           
           <div className="flex flex-wrap gap-4 items-center text-sm text-muted-foreground mb-8">
             <div className="flex items-center gap-1">
@@ -86,36 +85,50 @@ const BlogPostPage = () => {
           </div>
         </div>
 
-        {/* Cover image - using a placeholder if no image is available */}
+        {/* Cover image */}
         <div className="max-w-4xl mx-auto mb-10">
           <img 
             src="https://images.unsplash.com/photo-1579389083078-4e7018379f7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
             alt={post.title} 
-            className="w-full h-[400px] object-cover rounded-xl"
+            className="w-full h-[400px] object-cover rounded-xl shadow-lg"
           />
         </div>
 
-        {/* Article content */}
-        <div className="max-w-3xl mx-auto prose prose-lg prose-headings:text-primary prose-a:text-primary">
+        {/* Article content with improved typography */}
+        <div className="max-w-3xl mx-auto prose prose-lg prose-slate lg:prose-xl
+          prose-headings:text-primary prose-headings:font-bold prose-headings:mb-4
+          prose-p:text-foreground/90 prose-p:leading-relaxed prose-p:mb-6
+          prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+          prose-strong:text-foreground prose-strong:font-semibold
+          prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-6
+          prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-6
+          prose-li:mb-2
+          prose-blockquote:border-l-4 prose-blockquote:border-primary/30 prose-blockquote:pl-4 prose-blockquote:italic
+          prose-img:rounded-lg prose-img:shadow-md
+          prose-code:text-primary/90 prose-code:bg-secondary/50 prose-code:px-1 prose-code:rounded
+          prose-pre:bg-secondary/30 prose-pre:p-4 prose-pre:rounded-lg">
           <div dangerouslySetInnerHTML={{ __html: post.content }} />
         </div>
 
-        <Separator className="my-12 max-w-3xl mx-auto" />
+        <div className="max-w-3xl mx-auto">
+          {/* Separator */}
+          <Separator className="my-12" />
 
-        {/* Share section */}
-        <div className="max-w-3xl mx-auto flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-4 md:mb-0">
-            <h3 className="text-lg font-semibold mb-2">Share this article</h3>
-            <div className="flex gap-3">
-              <Button variant="outline" size="icon">
-                <Share2 className="h-4 w-4" />
-              </Button>
+          {/* Share section */}
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="mb-4 md:mb-0">
+              <h3 className="text-lg font-semibold mb-2">Partager cet article</h3>
+              <div className="flex gap-3">
+                <Button variant="outline" size="icon">
+                  <Share2 className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
+            
+            <Button asChild>
+              <Link to="/blog">Lire plus d'articles</Link>
+            </Button>
           </div>
-          
-          <Button asChild>
-            <Link to="/blog">Read More Articles</Link>
-          </Button>
         </div>
       </div>
     </div>
