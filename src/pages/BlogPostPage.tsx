@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Calendar, Clock, Share2 } from "lucide-react";
@@ -29,6 +30,25 @@ const BlogPostPage = () => {
     }
   }, [blogPosts, postId]);
 
+  // Fonction pour vérifier si le contenu est du HTML
+  const isHTML = (str: string) => {
+    return /<\/?[a-z][\s\S]*>/i.test(str);
+  };
+
+  // Préparation du contenu de l'article
+  const prepareContent = (content: string) => {
+    // Si le contenu est déjà du HTML, on le retourne tel quel
+    if (isHTML(content)) {
+      return content;
+    }
+    
+    // Sinon, on convertit le texte brut en HTML basique avec formatage des paragraphes
+    return content
+      .split('\n\n')
+      .map(paragraph => `<p>${paragraph.replace(/\n/g, '<br>')}</p>`)
+      .join('');
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -52,6 +72,9 @@ const BlogPostPage = () => {
       </div>
     );
   }
+
+  // Préparer le contenu de l'article
+  const formattedContent = prepareContent(post.content);
 
   return (
     <div className="min-h-screen pt-20 pb-20">
@@ -107,7 +130,7 @@ const BlogPostPage = () => {
           prose-img:rounded-lg prose-img:shadow-md
           prose-code:text-primary/90 prose-code:bg-secondary/50 prose-code:px-1 prose-code:rounded
           prose-pre:bg-secondary/30 prose-pre:p-4 prose-pre:rounded-lg">
-          <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          <div dangerouslySetInnerHTML={{ __html: formattedContent }} />
         </div>
 
         <div className="max-w-3xl mx-auto">
