@@ -41,10 +41,6 @@ export const ProjectCard = ({ title, description, image, link, github }: Project
             <span className="text-sm">GitHub</span>
           </a>
         )}
-        <a href={link} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-primary transition-colors flex items-center gap-1 ml-auto" aria-label={`Live demo for ${title}`}>
-          <ExternalLink className="h-4 w-4" />
-          <span className="text-sm">Demo</span>
-        </a>
       </div>
     </m.div>
   );
