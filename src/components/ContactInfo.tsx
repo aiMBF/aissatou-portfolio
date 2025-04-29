@@ -43,7 +43,7 @@ export const ContactInfo = () => {
         <div>
           <h3 className="font-medium mb-1">GitHub</h3>
           <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-            github.com/yourusername
+            github.com/aiMBF
           </a>
         </div>
       </div>
