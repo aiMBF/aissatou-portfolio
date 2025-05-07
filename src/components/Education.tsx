@@ -31,7 +31,7 @@ export const Education = () => {
         fr: "Master 2 DataScale"
       },
       institution: "Université Paris-Saclay",
-      period: "2017 - 2019",
+      period: "2023 - 2024",
       description: {
         en: "Specialization in data engineering, big data and cloud computing.",
         fr: "Spécialisation en ingénierie des données, big data et cloud computing."
@@ -45,7 +45,7 @@ export const Education = () => {
         fr: "Diplôme d'Ingénieur en Informatique"
       },
       institution: "École Polytechnique de Thiès",
-      period: "2014 - 2017",
+      period: "2018 - 2023",
       description: {
         en: "Fundamentals in programming, algorithms and data structures.",
         fr: "Fondamentaux en programmation, algorithmes et structures de données."
