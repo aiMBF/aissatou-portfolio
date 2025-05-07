@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import { Hero } from "@/components/Hero";
 import { About } from "@/components/About";
+import { Education } from "@/components/Education";
 import { Contact } from "@/components/Contact";
 import { Projects } from "@/components/Projects";
 import { Blog } from "@/components/Blog";
@@ -21,6 +22,7 @@ const Index = () => {
     <div className="min-h-screen">
       <Hero />
       <About />
+      <Education />
       <Contact />
       {/* Skills component removed as requested */}
       <Projects />
@@ -30,4 +32,3 @@ const Index = () => {
 };
 
 export default Index;
-
