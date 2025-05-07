@@ -27,24 +27,24 @@ export const Education = () => {
     {
       id: 1,
       degree: {
-        en: "Master's Degree in Data Engineering",
-        fr: "Master en Ingénierie des Données"
+        en: "Master 2 DataScale",
+        fr: "Master 2 DataScale"
       },
-      institution: "Université de Paris-Saclay",
+      institution: "Université Paris-Saclay",
       period: "2017 - 2019",
       description: {
         en: "Specialization in data engineering, big data and cloud computing.",
-        fr: "Spécialisation en data engineering, big data et cloud computing."
+        fr: "Spécialisation en ingénierie des données, big data et cloud computing."
       },
       type: "education",
     },
     {
       id: 2,
       degree: {
-        en: "Bachelor's Degree in Computer Science",
-        fr: "Licence en Informatique"
+        en: "Engineering Degree in Computer Science",
+        fr: "Diplôme d'Ingénieur en Informatique"
       },
-      institution: "Université de Paris",
+      institution: "École Polytechnique de Thiès",
       period: "2014 - 2017",
       description: {
         en: "Fundamentals in programming, algorithms and data structures.",
@@ -55,48 +55,6 @@ export const Education = () => {
   ];
 
   const certificationData: EducationItem[] = [
-    {
-      id: 3,
-      degree: {
-        en: "AWS Certified Data Analytics",
-        fr: "AWS Certified Data Analytics"
-      },
-      institution: "Amazon Web Services",
-      period: "2023",
-      description: {
-        en: "Specialized certification in designing and implementing data analytics solutions on AWS.",
-        fr: "Certification spécialisée dans la conception et l'implémentation de solutions d'analyse de données sur AWS."
-      },
-      type: "certification",
-    },
-    {
-      id: 4,
-      degree: {
-        en: "Google Professional Data Engineer",
-        fr: "Google Professional Data Engineer"
-      },
-      institution: "Google Cloud",
-      period: "2022",
-      description: {
-        en: "Expertise in designing, building, and managing data processing systems on GCP.",
-        fr: "Expertise en conception, création et gestion de solutions de traitement de données sur GCP."
-      },
-      type: "certification",
-    },
-    {
-      id: 5,
-      degree: {
-        en: "Microsoft Certified: Azure Data Engineer Associate",
-        fr: "Microsoft Certified: Azure Data Engineer Associate"
-      },
-      institution: "Microsoft",
-      period: "2021",
-      description: {
-        en: "Skills in integrating, transforming, and consolidating data from various disparate systems.",
-        fr: "Compétences en intégration, transformation et consolidation de données provenant de systèmes disparates."
-      },
-      type: "certification",
-    },
     {
       id: 6,
       degree: {
