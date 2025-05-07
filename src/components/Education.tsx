@@ -97,6 +97,62 @@ export const Education = () => {
       },
       type: "certification",
     },
+    {
+      id: 6,
+      degree: {
+        en: "Modernizing Data Lakes and Data Warehouses in Google Cloud Platform",
+        fr: "Modernisation des Data Lakes et Data Warehouses sur Google Cloud Platform"
+      },
+      institution: "Google Cloud Platform",
+      period: "2023",
+      description: {
+        en: "Techniques for building modern, scalable data lakes and warehouses on GCP.",
+        fr: "Techniques pour construire des data lakes et entrepôts de données modernes et évolutifs sur GCP."
+      },
+      type: "certification",
+    },
+    {
+      id: 7,
+      degree: {
+        en: "BigQuery for Data Warehousing",
+        fr: "BigQuery pour le Data Warehousing"
+      },
+      institution: "Google Cloud Platform",
+      period: "2023",
+      description: {
+        en: "Advanced techniques for data warehousing solutions using BigQuery.",
+        fr: "Techniques avancées pour les solutions d'entreposage de données avec BigQuery."
+      },
+      type: "certification",
+    },
+    {
+      id: 8,
+      degree: {
+        en: "Building Batch Data Pipelines in Google Cloud",
+        fr: "Construction de Pipelines de Données par Lots dans Google Cloud"
+      },
+      institution: "Google Cloud Platform",
+      period: "2022",
+      description: {
+        en: "Design and implementation of efficient batch processing data pipelines on GCP.",
+        fr: "Conception et implémentation de pipelines de traitement de données par lots efficaces sur GCP."
+      },
+      type: "certification",
+    },
+    {
+      id: 9,
+      degree: {
+        en: "Build Infrastructure with Terraform on Google Cloud",
+        fr: "Construction d'Infrastructure avec Terraform sur Google Cloud"
+      },
+      institution: "Google Cloud Platform",
+      period: "2022",
+      description: {
+        en: "Infrastructure as Code using Terraform to deploy and manage Google Cloud resources.",
+        fr: "Infrastructure as Code utilisant Terraform pour déployer et gérer des ressources Google Cloud."
+      },
+      type: "certification",
+    }
   ];
 
   const sectionTitle = language === "en" ? "Education & Certifications" : "Éducation & Certifications";

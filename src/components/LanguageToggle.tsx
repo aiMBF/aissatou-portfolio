@@ -16,9 +16,9 @@ export const LanguageToggle = () => {
     <div className="fixed top-4 right-4 z-50">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon" className="rounded-full">
+          <Button variant="outline" size="icon" className="rounded-full flex items-center gap-1 px-3">
             <Globe className="h-4 w-4" />
-            <span className="sr-only">Toggle language</span>
+            <span className="text-xs font-medium">{language === "en" ? "EN" : "FR"}</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
