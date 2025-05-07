@@ -1,8 +1,32 @@
 
 import { m } from "framer-motion";
 import { Database, Server, Cloud, Code } from "lucide-react";
+import { useLanguageStore } from "@/stores/languageStore";
 
 export const Hero = () => {
+  const { language } = useLanguageStore();
+
+  const heroText = {
+    subtitle: {
+      en: "Cloud Data Engineering | AI",
+      fr: "Ingénierie de Données Cloud | IA"
+    },
+    description: {
+      en: "Building scalable data solutions and sharing insights on AI",
+      fr: "Construction de solutions de données évolutives et partage de connaissances sur l'IA"
+    },
+    buttons: {
+      projects: {
+        en: "View Projects",
+        fr: "Voir les Projets"
+      },
+      blog: {
+        en: "Read My Blog",
+        fr: "Lire Mon Blog"
+      }
+    }
+  };
+
   return (
     <section className="min-h-screen flex items-center justify-center section-padding">
       <div className="max-w-4xl mx-auto text-center">
@@ -21,7 +45,7 @@ export const Hero = () => {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="text-xl md:text-2xl font-medium text-primary mb-8"
         >
-          Cloud Data Engineering | IA
+          {heroText.subtitle[language]}
         </m.p>
         
         <m.div 
@@ -42,7 +66,7 @@ export const Hero = () => {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="text-lg md:text-xl mb-8"
         >
-          Building scalable data solutions and sharing insights on IA
+          {heroText.description[language]}
         </m.p>
         
         <m.div
@@ -54,13 +78,13 @@ export const Hero = () => {
             href="#projects" 
             className="inline-block bg-primary text-primary-foreground px-8 py-3 rounded-full hover-lift mr-4"
           >
-            View Projects
+            {heroText.buttons.projects[language]}
           </a>
           <a 
             href="#blog" 
             className="inline-block bg-secondary text-secondary-foreground px-8 py-3 rounded-full hover-lift"
           >
-            Read My Blog
+            {heroText.buttons.blog[language]}
           </a>
         </m.div>
       </div>

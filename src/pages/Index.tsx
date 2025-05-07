@@ -6,6 +6,7 @@ import { Education } from "@/components/Education";
 import { Contact } from "@/components/Contact";
 import { Projects } from "@/components/Projects";
 import { Blog } from "@/components/Blog";
+import { LanguageToggle } from "@/components/LanguageToggle";
 import { useProjectsStore } from "@/stores/projectsStore";
 import { useBlogStore } from "@/stores/blogStore";
 
@@ -20,6 +21,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
+      <LanguageToggle />
       <Hero />
       <About />
       <Education />
