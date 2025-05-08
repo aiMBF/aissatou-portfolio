@@ -28,7 +28,7 @@ export const Projects = () => {
           className="text-center mb-16"
         >
           <span className="text-sm uppercase tracking-wider text-muted-foreground">Portfolio</span>
-          <h2 className="text-3xl md:text-4xl font-bold mt-2">Data Engineering Projects</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mt-2">Projects</h2>
         </m.div>
 
         <div className="px-8 md:px-16">
